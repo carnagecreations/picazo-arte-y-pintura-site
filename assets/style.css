@@ -80,6 +80,16 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
   *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
 }
 
+/* 1. custom text selection, tuned to the palette instead of browser-default blue */
+::selection{ background:var(--terracotta); color:var(--paper); }
+
+/* 2. custom scrollbar (webkit), thin and warm instead of default gray */
+::-webkit-scrollbar{ width:11px; height:11px; }
+::-webkit-scrollbar-track{ background:var(--paper-2); }
+::-webkit-scrollbar-thumb{ background:var(--terracotta-dim); border-radius:999px; border:3px solid var(--paper-2); }
+::-webkit-scrollbar-thumb:hover{ background:var(--terracotta); }
+html{ scrollbar-color:var(--terracotta-dim) var(--paper-2); scrollbar-width:thin; }
+
 /* ---------- scroll reveal ---------- */
 .reveal{ opacity:0; transform:translateY(16px); transition:opacity .8s cubic-bezier(.16,.8,.24,1), transform .8s cubic-bezier(.16,.8,.24,1); }
 .reveal.in-view{ opacity:1; transform:translateY(0); }
@@ -101,7 +111,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
   width:26px; height:1px;
   background:currentColor;
   display:inline-block;
+  transform-origin:left center;
+  animation:grow-line .6s cubic-bezier(.16,.8,.24,1) both;
 }
+/* 19. the little eyebrow tick draws in from nothing, like a brush stroke */
+@keyframes grow-line{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
 .eyebrow.c-turquoise{ color:var(--sage); }
 .eyebrow.c-coral{ color:var(--terracotta); }
 
@@ -112,7 +126,11 @@ header.site{
   backdrop-filter:blur(14px);
   -webkit-backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
+  box-shadow:0 0 0 rgba(31,29,27,0);
+  transition:box-shadow .3s ease;
 }
+/* 3. header gains a soft lift once the page has scrolled, for depth */
+header.site.is-scrolled{ box-shadow:0 8px 24px -16px rgba(31,29,27,.28); }
 .nav{
   display:flex; align-items:center; justify-content:space-between;
   padding:14px 32px;
@@ -126,7 +144,10 @@ header.site{
 .brand img{
   width:44px; height:44px; border-radius:50%; object-fit:cover;
   box-shadow:0 0 0 1px var(--line), 0 4px 10px rgba(31,29,27,.14);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
 }
+/* 4. logo gets a playful little spin+lift on hover */
+.brand:hover img{ transform:rotate(-8deg) scale(1.08); }
 .brand small{
   display:block; font-family:var(--mono); font-weight:400;
   font-size:10.5px; letter-spacing:.12em; color:var(--ink-dim);
@@ -134,14 +155,20 @@ header.site{
 }
 .navlinks{ display:flex; align-items:center; gap:30px; }
 .navlinks a{
+  position:relative;
   font-family:var(--mono); font-size:12.5px; letter-spacing:.06em;
   text-transform:uppercase; color:var(--ink-dim);
-  padding:6px 1px; border-bottom:1px solid transparent;
-  transition:color .2s, border-color .2s;
+  padding:6px 1px;
+  transition:color .2s;
 }
-.navlinks a:hover, .navlinks a[aria-current="page"]{
-  color:var(--ink); border-color:var(--terracotta);
+/* 5. nav underline grows from center instead of snapping on instantly */
+.navlinks a::after{
+  content:""; position:absolute; left:50%; right:50%; bottom:0; height:1px;
+  background:var(--terracotta);
+  transition:left .25s cubic-bezier(.16,.8,.24,1), right .25s cubic-bezier(.16,.8,.24,1);
 }
+.navlinks a:hover, .navlinks a[aria-current="page"]{ color:var(--ink); }
+.navlinks a:hover::after, .navlinks a[aria-current="page"]::after{ left:0; right:0; }
 
 /* fun, obvious language toggle */
 .langtoggle{
@@ -158,7 +185,10 @@ header.site{
 .langtoggle a.active{
   background:var(--terracotta); color:var(--paper); font-weight:600;
   box-shadow:0 3px 8px rgba(177,92,59,.35);
+  animation:pop .35s cubic-bezier(.34,1.56,.64,1);
 }
+/* 6. active language chip gives a little pop, like a stamp landing */
+@keyframes pop{ 0%{ transform:scale(.82); } 60%{ transform:scale(1.06); } 100%{ transform:scale(1); } }
 .langtoggle a:not(.active):hover{
   color:var(--ink); transform:scale(1.05);
   transition:transform .2s ease, color .2s ease;
@@ -251,11 +281,20 @@ header.site{
 }
 
 .btn{
+  position:relative; overflow:hidden;
   font-family:var(--mono); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
   padding:15px 28px; border-radius:2px; display:inline-block; font-weight:500;
   transition:transform .2s ease, background .2s ease, border-color .2s ease;
 }
 .btn:hover{ transform:translateY(-2px); }
+/* 12. a soft diagonal sheen sweeps across solid buttons on hover */
+.btn-solid::before{
+  content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.16), transparent);
+  transform:skewX(-16deg);
+  transition:left .55s ease;
+}
+.btn-solid:hover::before{ left:130%; }
 .btn-solid{ background:var(--ink); color:var(--paper); }
 .btn-solid:hover{ background:var(--terracotta); }
 .btn-outline{ border:1px solid var(--ink); color:var(--ink); }
@@ -274,7 +313,12 @@ section:last-of-type{ border-bottom:none; }
 .stat{ flex:1 1 200px; padding:0 32px; border-left:1px solid var(--line); }
 .stat:first-child{ border-left:none; padding-left:0; }
 .stat .num{ font-family:var(--display); font-size:44px; font-weight:500; color:var(--ink); }
-.stat .lbl{ font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-dim); margin-top:8px; max-width:22ch; }
+.stat .lbl{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink-dim); margin-top:10px; max-width:22ch; position:relative; padding-top:12px;
+}
+/* 14. a small accent tick separates each number from its label */
+.stat .lbl::before{ content:""; position:absolute; top:0; left:0; width:16px; height:2px; background:var(--terracotta-dim); }
 @media (max-width:700px){
   .stat{ border-left:none; border-top:1px solid var(--line); padding:24px 0 0; flex-basis:45%; }
 }
@@ -288,8 +332,17 @@ section:last-of-type{ border-bottom:none; }
   position:relative; background:none;
 }
 .piece .frame{ overflow:hidden; background:var(--paper-3); }
-.piece img{ width:100%; height:100%; object-fit:cover; aspect-ratio:1/1; transition:transform .7s cubic-bezier(.16,.8,.24,1), opacity .3s ease; }
-.piece:hover img{ transform:scale(1.035); opacity:.94; }
+.piece img{
+  width:100%; height:100%; object-fit:cover; aspect-ratio:1/1;
+  cursor:zoom-in;
+  transition:transform .7s cubic-bezier(.16,.8,.24,1), opacity .3s ease, box-shadow .4s ease;
+}
+/* 8. pieces lift softly off the wall on hover, like leaning in to look closer */
+.piece:hover img{ transform:scale(1.035); opacity:.94; box-shadow:0 22px 40px -18px rgba(31,29,27,.35); }
+
+/* 9. the museum-tape label eases in on hover rather than sitting static */
+.tape{ transition:color .25s ease, transform .25s ease; }
+.piece:hover .tape{ color:var(--terracotta); transform:translateX(2px); }
 
 /* varied rhythm across the wall, no uniform cards */
 .gallery-grid .piece:nth-child(6n+1){ grid-column:span 2; grid-row:span 2; }
@@ -352,7 +405,9 @@ section:last-of-type{ border-bottom:none; }
   padding-left:34px;
 }
 .card:first-child{ border-left:none; padding-left:0; }
-.card .swatch{ width:30px; height:3px; border-radius:0; margin-bottom:22px; background:var(--terracotta) !important; }
+.card .swatch{ width:30px; height:3px; border-radius:0; margin-bottom:22px; background:var(--terracotta) !important; transition:width .3s ease; }
+/* 20. the little service swatch stretches out on hover */
+.card:hover .swatch{ width:52px; }
 .card:nth-child(2) .swatch{ background:var(--sage) !important; }
 .card:nth-child(3) .swatch{ background:var(--gold) !important; }
 .card h3{ font-size:22px; }
@@ -365,8 +420,16 @@ section:last-of-type{ border-bottom:none; }
 
 /* ---------- testimonial ---------- */
 .quote{
+  position:relative;
   font-family:var(--display); font-style:italic; font-weight:400; font-size:clamp(24px,3.2vw,34px);
   max-width:24ch; line-height:1.32; color:var(--ink);
+}
+/* 13. a large decorative quotation mark anchors the pull-quote */
+.quote::before{
+  content:"\201C";
+  position:absolute; top:-.5em; left:-.42em;
+  font-size:2.6em; color:var(--terracotta-dim); opacity:.5;
+  font-style:normal; line-height:1;
 }
 .quote cite{ display:block; margin-top:24px; font-style:normal; font-family:var(--mono); font-size:12.5px; color:var(--ink-dim); letter-spacing:.04em; }
 
@@ -406,10 +469,11 @@ section:last-of-type{ border-bottom:none; }
 label{ font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-dim); display:block; margin-bottom:9px; }
 input,textarea,select{
   width:100%; background:transparent; border:none; border-bottom:1px solid var(--line); color:var(--ink);
-  padding:10px 2px; border-radius:0; font-family:var(--body); font-size:16px;
-  transition:border-color .2s ease;
+  padding:10px 8px; border-radius:2px 2px 0 0; font-family:var(--body); font-size:16px;
+  transition:border-color .2s ease, background .2s ease;
 }
-input:focus,textarea:focus,select:focus{ border-color:var(--terracotta); }
+/* 15. focused fields get a faint warm wash, not just a color-swapped line */
+input:focus,textarea:focus,select:focus{ border-color:var(--terracotta); background:rgba(177,92,59,.045); outline:none; }
 textarea{ min-height:130px; resize:vertical; }
 .form-row-2{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
 @media (max-width:560px){ .form-row-2{ grid-template-columns:1fr; } }
@@ -435,17 +499,47 @@ footer.site{ padding:70px 0 44px; background:var(--paper-2); border-top:1px soli
 /* ---------- lightbox ---------- */
 .lightbox{
   position:fixed; inset:0; background:rgba(42,32,25,.92); z-index:100;
-  display:none; align-items:center; justify-content:center; padding:40px;
+  display:flex; align-items:center; justify-content:center; padding:40px;
+  opacity:0; pointer-events:none;
+  transition:opacity .3s ease;
 }
-.lightbox.open{ display:flex; }
-.lightbox img{ max-height:86vh; max-width:min(1000px,92vw); border:8px solid var(--paper); }
+/* 10. lightbox fades and scales in instead of snapping open/closed */
+.lightbox.open{ opacity:1; pointer-events:auto; }
+.lightbox img{
+  max-height:86vh; max-width:min(1000px,92vw); border:8px solid var(--paper);
+  transform:scale(.96); transition:transform .35s cubic-bezier(.16,.8,.24,1);
+}
+.lightbox.open img{ transform:scale(1); }
 .lightbox .close{
   position:absolute; top:24px; right:28px; font-family:var(--mono); font-size:13px;
   color:var(--deep-text); border:1px solid var(--deep-line); padding:9px 16px; border-radius:999px;
+  transition:background .2s ease, color .2s ease;
 }
+/* 11. close button gets a clear hover state */
+.lightbox .close:hover{ background:var(--deep-text); color:var(--deep); }
 .lightbox .cap{ position:absolute; bottom:32px; left:0; right:0; text-align:center; font-family:var(--display); font-style:italic; font-size:15px; color:var(--deep-text); }
+
+/* ---------- back to top ---------- */
+.to-top{
+  position:fixed; right:24px; bottom:24px; z-index:50;
+  width:46px; height:46px; border-radius:50%; border:none;
+  background:var(--ink); color:var(--paper); font-size:18px; line-height:1;
+  box-shadow:0 10px 24px -8px rgba(31,29,27,.4);
+  cursor:pointer;
+  opacity:0; visibility:hidden; transform:translateY(10px);
+  transition:opacity .3s ease, transform .3s ease, visibility .3s, background .2s ease;
+}
+.to-top.visible{ opacity:1; visibility:visible; transform:translateY(0); }
+.to-top:hover{ background:var(--terracotta); }
+@media (max-width:560px){ .to-top{ right:16px; bottom:16px; width:42px; height:42px; } }
 
 /* ---------- misc ---------- */
 .divider{ height:1px; background:var(--line); margin:0 0 0; }
 .tag-row{ display:flex; gap:10px; flex-wrap:wrap; }
-.tag{ font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; border:1px solid var(--line); padding:6px 13px; border-radius:999px; color:var(--ink-dim); }
+.tag{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+  border:1px solid var(--line); padding:6px 13px; border-radius:999px; color:var(--ink-dim);
+  transition:border-color .2s ease, color .2s ease, background .2s ease;
+}
+/* 7. tag chips get a gentle hover fill instead of sitting inert */
+.tag:hover{ border-color:var(--terracotta-dim); color:var(--terracotta); background:rgba(177,92,59,.06); }
