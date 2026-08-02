@@ -122,9 +122,9 @@ html{ scrollbar-color:var(--terracotta-dim) var(--paper-2); scrollbar-width:thin
 /* ---------- header / nav ---------- */
 header.site{
   position:sticky; top:0; z-index:40;
-  background:rgba(247,245,242,0.88);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
+  /* solid, not translucent — a see-through header lets scrolling
+     headlines ghost through and read as an overlap bug */
+  background:var(--paper);
   border-bottom:1px solid var(--line);
   box-shadow:0 0 0 rgba(31,29,27,0);
   transition:box-shadow .3s ease;
