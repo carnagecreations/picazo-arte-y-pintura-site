@@ -324,6 +324,10 @@ body.nav-open .menu-btn span::after{ top:0; transform:rotate(-45deg); background
   text-wrap:balance;
 }
 .hero-overlay .lede{ color:rgba(237,230,218,.82); max-width:56ch; }
+/* the outline button defaults to dark ink text/border — invisible on
+   a dark photo. Give it the same light treatment as the CTA band. */
+.hero-overlay .btn-outline{ border-color:rgba(237,230,218,.5); color:var(--deep-text); }
+.hero-overlay .btn-outline:hover{ border-color:var(--deep-text); color:var(--deep-text); background:rgba(237,230,218,.1); }
 @media (max-width:700px){
   .hero.hero-immersive{ min-height:82vh; }
 }
@@ -452,13 +456,16 @@ section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); 
 .gallery-grid.no-span .piece{ grid-column:auto !important; grid-row:auto !important; }
 .gallery-grid.no-span .piece img{ aspect-ratio:1/1 !important; }
 
-/* the opening building shot is a true 4:3 landscape photo. Sharing a
-   grid row forces it to stretch to match its neighbors' height
-   (img has width/height:100%, which overrides aspect-ratio entirely),
-   so instead give it the full row to itself — a wide banner-style
-   opening shot at its real ratio, nothing cropped out. */
-.gallery-grid .piece:first-child{ grid-column:1 / -1 !important; grid-row:span 1 !important; }
-.gallery-grid .piece:first-child img{ height:auto !important; aspect-ratio:4/3 !important; }
+/* the La Malquerida building shot is a true 4:3 landscape photo. Sharing
+   a grid row forces it to stretch to match its neighbors' height (img
+   has width/height:100%, which overrides aspect-ratio entirely), so
+   instead give it the full row to itself — a wide banner-style opening
+   shot at its real ratio, nothing cropped out. Targeted by image, not
+   :first-child — the gallery page splits into multiple grid sections
+   around the feature-breaks, and :first-child matched the first piece
+   of EVERY section, not just this one photo. */
+.gallery-grid .piece:has(img[src*="gallery-01-mural-building-aerial"]){ grid-column:1 / -1 !important; grid-row:span 1 !important; }
+.gallery-grid .piece img[src*="gallery-01-mural-building-aerial"]{ height:auto !important; aspect-ratio:4/3 !important; }
 
 /* a full-bleed moment that breaks the grid entirely — one killer piece,
    edge to edge, because some of these deserve more than a thumbnail */
@@ -521,6 +528,14 @@ section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); 
 @media (max-width:860px){
   .split{ grid-template-columns:1fr; gap:36px; }
   .split.reverse .img{ order:0; }
+}
+
+/* the "Behind the Process" photo trio — align-items:center (right for
+   image+text pairs) made mismatched-height photos center awkwardly
+   against each other, so top-align instead and allow a third photo */
+.process-split{ grid-template-columns:repeat(3, 1fr); align-items:start; gap:44px; }
+@media (max-width:900px){
+  .process-split{ grid-template-columns:1fr; }
 }
 
 /* ---------- process list (editorial numbered sequence) ---------- */
