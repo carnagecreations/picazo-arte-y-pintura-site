@@ -200,22 +200,54 @@ header.site.is-scrolled{ box-shadow:0 8px 24px -16px rgba(31,29,27,.28); }
 }
 .navcta:hover{ background:var(--terracotta); transform:translateY(-1px); }
 
-.menu-btn{ display:none; background:none; border:1px solid var(--line); color:var(--ink); border-radius:4px; padding:8px 10px; font-size:20px; }
+.menu-btn{
+  display:none; position:relative; width:38px; height:34px;
+  background:none; border:none; color:var(--ink); padding:0; cursor:pointer;
+}
+.menu-btn span, .menu-btn span::before, .menu-btn span::after{
+  content:""; position:absolute; left:6px; right:6px; height:1.5px; background:var(--ink);
+  transition:transform .3s cubic-bezier(.16,.8,.24,1), opacity .2s ease, top .3s ease;
+}
+.menu-btn span{ top:16px; }
+.menu-btn span::before{ top:-8px; }
+.menu-btn span::after{ top:8px; }
+/* hamburger morphs into an X once the full-screen menu is open */
+body.nav-open .menu-btn span{ background:transparent; }
+body.nav-open .menu-btn span::before{ top:0; transform:rotate(45deg); background:var(--ink); }
+body.nav-open .menu-btn span::after{ top:0; transform:rotate(-45deg); background:var(--ink); }
+
 .mobile-panel{ display:none; }
 
 @media (max-width: 880px){
   .navlinks, .navcta{ display:none; }
   .menu-btn{ display:inline-block; }
   .nav{ padding:12px 20px; }
-  body.nav-open .mobile-panel{
-    display:flex; flex-direction:column; gap:2px;
-    background:var(--paper-2); border-bottom:1px solid var(--line);
-    padding:6px 20px 20px;
+
+  /* full-screen editorial takeover, not a small dropdown strip */
+  .mobile-panel{
+    display:flex; flex-direction:column; justify-content:center; gap:4px;
+    position:fixed; inset:0; z-index:39;
+    background:var(--paper);
+    padding:100px 32px 40px;
+    opacity:0; visibility:hidden; transform:translateY(-8px);
+    transition:opacity .35s ease, transform .35s ease, visibility .35s;
   }
+  body.nav-open .mobile-panel{ opacity:1; visibility:visible; transform:translateY(0); }
+  body.nav-open{ overflow:hidden; }
   .mobile-panel a{
-    font-family:var(--mono); font-size:13px; letter-spacing:.05em; text-transform:uppercase;
-    padding:13px 4px; border-bottom:1px solid var(--line); color:var(--ink-dim);
+    font-family:var(--display); font-size:clamp(28px,8vw,40px); font-weight:500;
+    letter-spacing:-.01em; text-transform:none;
+    padding:14px 0; border-bottom:1px solid var(--line); color:var(--ink);
+    opacity:0; transform:translateY(10px);
+    transition:opacity .4s ease, transform .4s ease;
   }
+  body.nav-open .mobile-panel a{ opacity:1; transform:translateY(0); }
+  .mobile-panel a:nth-child(1){ transition-delay:.05s; }
+  .mobile-panel a:nth-child(2){ transition-delay:.1s; }
+  .mobile-panel a:nth-child(3){ transition-delay:.15s; }
+  .mobile-panel a:nth-child(4){ transition-delay:.2s; }
+  .mobile-panel a:nth-child(5){ transition-delay:.25s; }
+  .mobile-panel a:nth-child(6){ transition-delay:.3s; font-family:var(--mono); font-size:13px; text-transform:uppercase; color:var(--terracotta); border-bottom:none; margin-top:12px; }
   .mobile-panel a[aria-current="page"]{ color:var(--terracotta); }
 }
 
@@ -264,11 +296,17 @@ header.site.is-scrolled{ box-shadow:0 8px 24px -16px rgba(31,29,27,.28); }
 .hero-frame{ margin:0; position:relative; }
 .hero-frame img{
   aspect-ratio:4/5; width:100%; object-fit:cover;
-  border:10px solid var(--paper);
-  outline:1px solid var(--line);
-  box-shadow:0 40px 70px -30px rgba(31,29,27,.4), 0 14px 30px -12px rgba(31,29,27,.2);
+  border:14px solid var(--paper);
+  /* a real passe-partout: paper mat, then a hairline, then a second
+     whisper-thin mat, so it reads as framed rather than just bordered */
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 0 0 7px var(--paper-2),
+    0 0 0 8px var(--line),
+    0 40px 70px -30px rgba(31,29,27,.4), 0 14px 30px -12px rgba(31,29,27,.2);
   transform:rotate(1.2deg);
   border-radius:1px;
+  will-change:transform;
 }
 .hero-frame figcaption{
   font-family:var(--display); font-style:italic; font-weight:400;
@@ -330,14 +368,30 @@ section:last-of-type{ border-bottom:none; }
 .gallery-grid.tight{ grid-template-columns:repeat(3,1fr); }
 .piece{
   position:relative; background:none;
+  transition:transform .5s cubic-bezier(.16,.8,.24,1);
 }
+/* real gallery-wall tilt — each piece sits very slightly askew, like it was
+   actually pinned up by hand, and squares up when you look closer */
+.piece:nth-child(odd){ transform:rotate(-.55deg); }
+.piece:nth-child(even){ transform:rotate(.45deg); }
+.piece:hover{ transform:rotate(0deg) translateY(-3px); }
 .piece .frame{ overflow:hidden; background:var(--paper-3); }
 .piece img{
   width:100%; height:100%; object-fit:cover; aspect-ratio:1/1;
   cursor:zoom-in;
+  background:linear-gradient(100deg, var(--paper-3) 30%, var(--paper-2) 50%, var(--paper-3) 70%);
+  background-size:300% 100%;
+  animation:shimmer 1.6s ease-in-out infinite;
   transition:transform .7s cubic-bezier(.16,.8,.24,1), opacity .3s ease, box-shadow .4s ease;
 }
-/* 8. pieces lift softly off the wall on hover, like leaning in to look closer */
+/* image shimmer while loading; killed once script.js marks it loaded */
+@keyframes shimmer{ 0%{ background-position:200% 0; } 100%{ background-position:-200% 0; } }
+.piece img.is-loaded, .hero-frame img.is-loaded, .split img.is-loaded{ animation:none; background:none; }
+.hero-frame img, .split img{
+  background:linear-gradient(100deg, var(--paper-3) 30%, var(--paper-2) 50%, var(--paper-3) 70%);
+  background-size:300% 100%;
+  animation:shimmer 1.6s ease-in-out infinite;
+}
 .piece:hover img{ transform:scale(1.035); opacity:.94; box-shadow:0 22px 40px -18px rgba(31,29,27,.35); }
 
 /* 9. the museum-tape label eases in on hover rather than sitting static */
@@ -373,7 +427,14 @@ section:last-of-type{ border-bottom:none; }
 
 /* ---------- feature split (image + text) ---------- */
 .split{ display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center; }
-.split img{ border:8px solid var(--paper); outline:1px solid var(--line); box-shadow:0 24px 48px -20px rgba(31,29,27,.3); }
+.split img{
+  border:12px solid var(--paper);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 0 0 6px var(--paper-2),
+    0 0 0 7px var(--line),
+    0 24px 48px -20px rgba(31,29,27,.3);
+}
 .split.reverse .img{ order:2; }
 @media (max-width:860px){
   .split{ grid-template-columns:1fr; gap:36px; }
@@ -518,6 +579,45 @@ footer.site{ padding:70px 0 44px; background:var(--paper-2); border-top:1px soli
 /* 11. close button gets a clear hover state */
 .lightbox .close:hover{ background:var(--deep-text); color:var(--deep); }
 .lightbox .cap{ position:absolute; bottom:32px; left:0; right:0; text-align:center; font-family:var(--display); font-style:italic; font-size:15px; color:var(--deep-text); }
+
+/* ---------- gallery cursor ---------- */
+/* a small "view" pill that follows the pointer over gallery pieces,
+   instead of the native cursor — reads as a deliberate gallery detail */
+.gallery-cursor{
+  position:fixed; top:0; left:0; z-index:60;
+  display:flex; align-items:center; justify-content:center;
+  width:74px; height:74px; border-radius:50%;
+  background:var(--ink); color:var(--paper);
+  font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  pointer-events:none;
+  opacity:0; transform:translate(-50%,-50%) scale(.4);
+  transition:opacity .25s ease, transform .25s cubic-bezier(.16,.8,.24,1);
+  will-change:transform;
+}
+.gallery-cursor.visible{ opacity:1; transform:translate(-50%,-50%) scale(1); }
+/* native cursor only hides once JS confirms the custom one is running */
+body.has-gallery-cursor .piece img{ cursor:none; }
+@media (hover:none), (pointer:coarse){
+  .gallery-cursor{ display:none; }
+  .piece img{ cursor:zoom-in; }
+}
+
+/* ---------- site-wide grain, so paper never reads as a flat digital tone ---------- */
+body::before{
+  content:"";
+  position:fixed; inset:0; z-index:90; pointer-events:none;
+  opacity:.035; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- footer brush divider ---------- */
+footer.site{ position:relative; }
+footer.site::before{
+  content:""; position:absolute; top:-1px; left:0; right:0; height:6px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 8' preserveAspectRatio='none'%3E%3Cpath d='M0 4c15-4 30 4 50 2s35-6 50-2 30 5 50 1 35-5 50-1' fill='none' stroke='%23B15C3B' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat:repeat-x; background-size:200px 6px;
+  opacity:.55;
+}
 
 /* ---------- back to top ---------- */
 .to-top{

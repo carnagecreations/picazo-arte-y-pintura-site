@@ -2,13 +2,21 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Mobile nav toggle
+  // Mobile nav toggle (full-screen editorial takeover)
   var menuBtn = document.querySelector('.menu-btn');
   if (menuBtn) {
-    menuBtn.addEventListener('click', function () {
-      document.body.classList.toggle('nav-open');
-      var open = document.body.classList.contains('nav-open');
+    var setNav = function (open) {
+      document.body.classList.toggle('nav-open', open);
       menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    menuBtn.addEventListener('click', function () {
+      setNav(!document.body.classList.contains('nav-open'));
+    });
+    document.querySelectorAll('.mobile-panel a').forEach(function (a) {
+      a.addEventListener('click', function () { setNav(false); });
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setNav(false);
     });
   }
 
@@ -87,6 +95,80 @@ document.addEventListener('DOMContentLoaded', function () {
       if (e.key === 'Escape') closeLb();
     });
   }
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isEs = document.documentElement.lang === 'es';
+
+  // Custom gallery cursor: a small "view" pill that follows the pointer
+  // while it hovers a piece, instead of showing the native cursor
+  var canHover = window.matchMedia && window.matchMedia('(hover:hover)').matches;
+  if (canHover && !reduceMotion && document.querySelector('.piece')) {
+    document.body.classList.add('has-gallery-cursor');
+    var cursor = document.createElement('div');
+    cursor.className = 'gallery-cursor';
+    cursor.textContent = isEs ? 'Ver' : 'View';
+    document.body.appendChild(cursor);
+    var cx = 0, cy = 0, tx = 0, ty = 0;
+    document.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; });
+    (function raf() {
+      cx += (tx - cx) * 0.2;
+      cy += (ty - cy) * 0.2;
+      cursor.style.transform = 'translate(' + cx + 'px,' + cy + 'px) translate(-50%,-50%)';
+      requestAnimationFrame(raf);
+    })();
+    document.querySelectorAll('.piece').forEach(function (piece) {
+      piece.addEventListener('mouseenter', function () { cursor.classList.add('visible'); });
+      piece.addEventListener('mouseleave', function () { cursor.classList.remove('visible'); });
+    });
+  }
+
+  // Stat numbers count up from zero once they scroll into view
+  document.querySelectorAll('.stat .num').forEach(function (el) {
+    var raw = el.textContent.trim();
+    var match = raw.match(/[\d.]+/);
+    if (!match) return;
+    var target = parseFloat(match[0]);
+    var prefix = raw.slice(0, match.index);
+    var suffix = raw.slice(match.index + match[0].length);
+    var decimals = (match[0].split('.')[1] || '').length;
+    if (reduceMotion) return;
+    var counted = false;
+    var io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !counted) {
+          counted = true;
+          var start = null;
+          var duration = 1400;
+          function step(ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = prefix + (target * eased).toFixed(decimals) + suffix;
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = raw;
+          }
+          requestAnimationFrame(step);
+          io2.unobserve(el);
+        }
+      });
+    }, { threshold: 0.4 });
+    io2.observe(el);
+  });
+
+  // Subtle parallax drift on the homepage's framed hero photo
+  var heroFrame = document.querySelector('.hero-frame img');
+  if (heroFrame && !reduceMotion && window.innerWidth > 900) {
+    document.addEventListener('scroll', function () {
+      var y = Math.min(window.scrollY, 500) * 0.06;
+      heroFrame.style.transform = 'translateY(' + y + 'px) rotate(1.2deg)';
+    }, { passive: true });
+  }
+
+  // Kill the loading shimmer on framed images once they've actually loaded
+  document.querySelectorAll('.piece img, .hero-frame img, .split img').forEach(function (img) {
+    if (img.complete) img.classList.add('is-loaded');
+    else img.addEventListener('load', function () { img.classList.add('is-loaded'); });
+  });
 
   // Contact form -> SMS handoff (static-site friendly; swap for a
   // real form endpoint once one is wired up)
