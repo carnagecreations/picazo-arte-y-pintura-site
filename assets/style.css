@@ -447,6 +447,14 @@ section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); 
 .gallery-grid.no-span .piece{ grid-column:auto !important; grid-row:auto !important; }
 .gallery-grid.no-span .piece img{ aspect-ratio:1/1 !important; }
 
+/* the opening building shot is a true 4:3 landscape photo. Sharing a
+   grid row forces it to stretch to match its neighbors' height
+   (img has width/height:100%, which overrides aspect-ratio entirely),
+   so instead give it the full row to itself — a wide banner-style
+   opening shot at its real ratio, nothing cropped out. */
+.gallery-grid .piece:first-child{ grid-column:1 / -1 !important; grid-row:span 1 !important; }
+.gallery-grid .piece:first-child img{ height:auto !important; aspect-ratio:4/3 !important; }
+
 /* a full-bleed moment that breaks the grid entirely — one killer piece,
    edge to edge, because some of these deserve more than a thumbnail */
 .feature-break{
