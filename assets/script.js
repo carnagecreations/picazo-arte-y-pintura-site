@@ -163,17 +163,8 @@ document.addEventListener('DOMContentLoaded', function () {
     io2.observe(el);
   });
 
-  // Subtle parallax drift on the homepage's framed hero photo
-  var heroFrame = document.querySelector('.hero-frame img');
-  if (heroFrame && !reduceMotion && window.innerWidth > 900) {
-    document.addEventListener('scroll', function () {
-      var y = Math.min(window.scrollY, 500) * 0.06;
-      heroFrame.style.transform = 'translateY(' + y + 'px) rotate(1.2deg)';
-    }, { passive: true });
-  }
-
   // Kill the loading shimmer on framed images once they've actually loaded
-  document.querySelectorAll('.piece img, .hero-frame img, .split img').forEach(function (img) {
+  document.querySelectorAll('.piece img, .split img').forEach(function (img) {
     if (img.complete) img.classList.add('is-loaded');
     else img.addEventListener('load', function () { img.classList.add('is-loaded'); });
   });

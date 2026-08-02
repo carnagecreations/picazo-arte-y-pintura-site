@@ -287,35 +287,63 @@ body.nav-open .menu-btn span::after{ top:0; transform:rotate(-45deg); background
 }
 .hero-actions{ display:flex; gap:18px; margin-top:36px; flex-wrap:wrap; }
 
-/* ---------- hero (homepage, framed image variant) ---------- */
-.hero.has-image{ padding:80px 0 90px; }
-.hero-grid{
-  display:grid; grid-template-columns:1.15fr .85fr; gap:64px; align-items:center;
+/* ---------- hero (homepage, immersive full-bleed variant) ----------
+   Her work is loud and alive — the site's chrome should get out of the
+   way here and let it fill the whole screen, cross-fading through a
+   handful of the wildest pieces before you even scroll. */
+.hero.hero-immersive{
+  position:relative; padding:0; border-bottom:none; overflow:hidden;
+  min-height:92vh; display:flex; align-items:flex-end;
+  color:var(--deep-text);
 }
-.hero-copy h1{ font-size:clamp(36px,5.4vw,60px); max-width:13ch; }
-.hero-frame{ margin:0; position:relative; }
-.hero-frame img{
-  aspect-ratio:4/5; width:100%; object-fit:cover;
-  border:14px solid var(--paper);
-  /* a real passe-partout: paper mat, then a hairline, then a second
-     whisper-thin mat, so it reads as framed rather than just bordered */
-  box-shadow:
-    0 0 0 1px var(--line),
-    0 0 0 7px var(--paper-2),
-    0 0 0 8px var(--line),
-    0 40px 70px -30px rgba(31,29,27,.4), 0 14px 30px -12px rgba(31,29,27,.2);
-  transform:rotate(1.2deg);
-  border-radius:1px;
-  will-change:transform;
+.hero-bg{ position:absolute; inset:0; z-index:0; overflow:hidden; background:var(--deep); }
+.hero-bg .slide{
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
+  opacity:0;
+  animation:heroCycle 24s infinite, heroZoom 24s ease-in-out infinite;
 }
-.hero-frame figcaption{
-  font-family:var(--display); font-style:italic; font-weight:400;
-  font-size:14px; color:var(--ink-dim);
-  margin-top:18px; padding-left:14px; transform:rotate(1.2deg);
+.hero-bg .slide:nth-child(1){ animation-delay:0s, 0s; }
+.hero-bg .slide:nth-child(2){ animation-delay:6s, 0s; }
+.hero-bg .slide:nth-child(3){ animation-delay:12s, 0s; }
+.hero-bg .slide:nth-child(4){ animation-delay:18s, 0s; }
+@keyframes heroCycle{
+  0%{ opacity:0; } 3%{ opacity:1; } 22%{ opacity:1; } 27%{ opacity:0; } 100%{ opacity:0; }
 }
-@media (max-width:900px){
-  .hero-grid{ grid-template-columns:1fr; gap:40px; }
-  .hero-frame{ max-width:340px; }
+@keyframes heroZoom{ 0%{ transform:scale(1); } 100%{ transform:scale(1.1); } }
+.hero-bg::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(26,20,15,.2) 0%, rgba(20,15,11,.55) 62%, rgba(15,11,8,.88) 100%);
+}
+.hero-overlay{ position:relative; z-index:1; padding:80px 0 76px; }
+.hero-overlay .eyebrow{ color:var(--gold); }
+.hero-overlay .eyebrow::before{ background:var(--gold); }
+.hero-overlay h1{
+  color:var(--deep-text);
+  font-size:clamp(42px, 7vw, 92px); max-width:16ch; line-height:1.02;
+  text-wrap:balance;
+}
+.hero-overlay .lede{ color:rgba(237,230,218,.82); max-width:56ch; }
+@media (max-width:700px){
+  .hero.hero-immersive{ min-height:82vh; }
+}
+
+/* the marquee — a scrolling strip of the work itself, right up top */
+.marquee-wrap{ background:var(--deep); border-bottom:1px solid var(--deep-line); overflow:hidden; padding:22px 0; }
+.marquee-track{
+  display:flex; gap:16px; width:max-content;
+  animation:marqueeScroll 45s linear infinite;
+}
+.marquee-wrap:hover .marquee-track{ animation-play-state:paused; }
+.marquee-track img{
+  height:96px; width:150px; object-fit:cover; border-radius:2px;
+  filter:saturate(1.05); opacity:.92;
+  transition:opacity .3s ease, transform .3s ease;
+}
+.marquee-track img:hover{ opacity:1; transform:scale(1.04); }
+@keyframes marqueeScroll{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@media (max-width:700px){
+  .marquee-track img{ height:74px; width:116px; }
 }
 
 .btn{
@@ -400,7 +428,12 @@ section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); 
 
 /* 9. the museum-tape label eases in on hover rather than sitting static */
 .tape{ transition:color .25s ease, transform .25s ease; }
-.piece:hover .tape{ color:var(--terracotta); transform:translateX(2px); }
+.piece:hover .tape{ transform:translateX(2px); }
+/* the wall doesn't play favorites with one accent color — it cycles
+   through her palette piece by piece, same as the work itself does */
+.piece:nth-child(3n+1):hover .tape{ color:var(--terracotta); }
+.piece:nth-child(3n+2):hover .tape{ color:var(--sage); }
+.piece:nth-child(3n+3):hover .tape{ color:var(--gold); }
 
 /* varied rhythm across the wall, no uniform cards */
 .gallery-grid .piece:nth-child(6n+1){ grid-column:span 2; grid-row:span 2; }
@@ -413,6 +446,32 @@ section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); 
    reading as intentional, so keep those grids even and simply tilted */
 .gallery-grid.no-span .piece{ grid-column:auto !important; grid-row:auto !important; }
 .gallery-grid.no-span .piece img{ aspect-ratio:1/1 !important; }
+
+/* a full-bleed moment that breaks the grid entirely — one killer piece,
+   edge to edge, because some of these deserve more than a thumbnail */
+.feature-break{
+  position:relative; padding:0; border:none; overflow:hidden;
+  height:78vh; min-height:440px; cursor:zoom-in;
+}
+.feature-break img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform 1.2s cubic-bezier(.16,.8,.24,1);
+}
+.feature-break:hover img{ transform:scale(1.045); }
+.feature-break::after{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(0deg, rgba(20,15,11,.7) 0%, transparent 40%);
+}
+.feature-break-cap{
+  position:absolute; left:0; right:0; bottom:0; z-index:1;
+  padding:44px 32px; max-width:var(--max); margin:0 auto;
+}
+.feature-break-cap .tape{ color:var(--gold); }
+.feature-break-cap p{
+  font-family:var(--display); font-style:italic; font-size:clamp(22px,3.4vw,32px);
+  color:var(--deep-text); margin:0;
+}
+@media (max-width:700px){ .feature-break{ height:60vh; } }
 
 .tape{
   display:block;
