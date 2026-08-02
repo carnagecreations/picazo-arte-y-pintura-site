@@ -342,6 +342,9 @@ body.nav-open .menu-btn span::after{ top:0; transform:rotate(-45deg); background
 /* ---------- sections ---------- */
 section{ padding:100px 0; border-bottom:1px solid var(--line); }
 section:last-of-type{ border-bottom:none; }
+/* a quiet alternating tone between sections, so the page reads like
+   facing pages of a catalog rather than one flat scroll */
+section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); }
 .section-head{ max-width:640px; margin-bottom:60px; }
 .section-head h2{ font-size:clamp(30px,4vw,48px); }
 .section-head p{ color:var(--ink-dim); font-size:18px; }
@@ -353,11 +356,12 @@ section:last-of-type{ border-bottom:none; }
 .stat .num{ font-family:var(--display); font-size:44px; font-weight:500; color:var(--ink); }
 .stat .lbl{
   font-family:var(--mono); font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
-  color:var(--ink-dim); margin-top:10px; max-width:22ch; position:relative; padding-top:12px;
+  color:var(--ink-dim); margin-top:10px; max-width:20ch; position:relative; padding-top:12px;
+  text-wrap:balance;
 }
 /* 14. a small accent tick separates each number from its label */
 .stat .lbl::before{ content:""; position:absolute; top:0; left:0; width:16px; height:2px; background:var(--terracotta-dim); }
-@media (max-width:700px){
+@media (max-width:860px){
   .stat{ border-left:none; border-top:1px solid var(--line); padding:24px 0 0; flex-basis:45%; }
 }
 
@@ -403,6 +407,12 @@ section:last-of-type{ border-bottom:none; }
 .gallery-grid .piece:nth-child(6n+1) img{ aspect-ratio:1/1; }
 .gallery-grid.tight .piece:nth-child(5n+2){ grid-column:span 2; }
 .gallery-grid.tight .piece:nth-child(5n+2) img{ aspect-ratio:2/1; }
+
+/* curated small sets (the homepage teaser) skip the big-tile variety —
+   with only a handful of pieces it just orphans the last one instead of
+   reading as intentional, so keep those grids even and simply tilted */
+.gallery-grid.no-span .piece{ grid-column:auto !important; grid-row:auto !important; }
+.gallery-grid.no-span .piece img{ aspect-ratio:1/1 !important; }
 
 .tape{
   display:block;
@@ -493,6 +503,12 @@ section:last-of-type{ border-bottom:none; }
   font-style:normal; line-height:1;
 }
 .quote cite{ display:block; margin-top:24px; font-style:normal; font-family:var(--mono); font-size:12.5px; color:var(--ink-dim); letter-spacing:.04em; }
+/* a small painted signature, like the one in the corner of a canvas */
+.quote::after{
+  content:"Picazo"; display:block; margin-top:18px;
+  font-family:var(--display); font-style:italic; font-weight:600; font-size:19px;
+  color:var(--terracotta-dim); transform:rotate(-2deg);
+}
 
 /* ---------- cta band — the one deep, textured room ---------- */
 .cta-band{
@@ -518,7 +534,13 @@ section:last-of-type{ border-bottom:none; }
   pointer-events:none;
 }
 .cta-band .wrap{ position:relative; z-index:1; }
-.cta-band h2{ font-size:clamp(30px,5vw,50px); max-width:16ch; margin:0 auto 22px; color:var(--deep-text); }
+.cta-band h2{ font-size:clamp(30px,5vw,50px); max-width:16ch; margin:0 auto 34px; color:var(--deep-text); }
+/* the same hand-drawn swoosh from the hero, echoed here in the one deep room */
+.cta-band h2::before{
+  content:""; display:block; width:110px; height:14px; margin:0 auto 26px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 22'%3E%3Cpath d='M3 16C40 4 80 20 120 10C160 0 200 18 240 8C270 1 300 14 337 6' fill='none' stroke='%23C98A6C' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-size:contain; background-position:center;
+}
 .cta-band p{ color:rgba(237,230,218,.72); max-width:44ch; margin:0 auto 36px; font-size:18px; }
 .cta-band .btn-solid{ background:var(--deep-text); color:var(--deep); }
 .cta-band .btn-solid:hover{ background:var(--terracotta-dim); color:var(--deep); }

@@ -48,9 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
       '</svg>' + fbLink.textContent;
   }
 
-  // Slow, gentle fade-in on scroll for editorial sections
+  // Slow, gentle fade-in on scroll for editorial sections. Never applied to
+  // the CTA band — that copy is the whole point of the section and must
+  // never be at risk of staying invisible if an observer misfires.
   var revealTargets = document.querySelectorAll(
-    'section:not(.hero) > .wrap > *, .piece, .step, .card, .stat'
+    'section:not(.hero):not(.cta-band) > .wrap > *, .piece, .step, .card, .stat'
   );
   if ('IntersectionObserver' in window && revealTargets.length) {
     revealTargets.forEach(function (el) { el.classList.add('reveal'); });
@@ -66,6 +68,12 @@ document.addEventListener('DOMContentLoaded', function () {
       { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
     );
     revealTargets.forEach(function (el) { io.observe(el); });
+
+    // Safety net: whatever the reason, reveal content never stays hidden.
+    // Anything still waiting after a few seconds is forced visible.
+    setTimeout(function () {
+      revealTargets.forEach(function (el) { el.classList.add('in-view'); });
+    }, 2500);
   }
 
   // Gallery lightbox
