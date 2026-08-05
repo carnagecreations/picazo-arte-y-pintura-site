@@ -821,6 +821,30 @@
     document.getElementById('tag').addEventListener('input', () => autoTranslate('tag', 'tagEn', 'es|en'));
     document.getElementById('tagEn').addEventListener('input', () => autoTranslate('tagEn', 'tag', 'en|es'));
 
+    // Wires ES <-> EN auto-translate for every field-name pair in `fields`
+    // that follows the "key" / "keyEn" convention (e.g. HOME_FIELDS with
+    // prefix 'home_'). Fields with no "*En" counterpart in the same list
+    // (like stat numbers or the phone number) are left alone.
+    // Marks each element directly (not by id) so re-running this after a
+    // section rebuilds its own fields (buildMuralsFields, buildStatsFields)
+    // wires the fresh elements instead of silently skipping them.
+    function wireBilingualAutoTranslate(fields, prefix) {
+      fields.forEach(key => {
+        if (key.endsWith('En')) return;
+        const enKey = key + 'En';
+        if (!fields.includes(enKey)) return;
+        const esId = prefix + key;
+        const enId = prefix + enKey;
+        const esEl = document.getElementById(esId);
+        const enEl = document.getElementById(enId);
+        if (!esEl || !enEl || esEl.dataset.autoTranslateWired) return;
+        esEl.addEventListener('input', () => autoTranslate(esId, enId, 'es|en'));
+        enEl.addEventListener('input', () => autoTranslate(enId, esId, 'en|es'));
+        esEl.dataset.autoTranslateWired = 'true';
+        enEl.dataset.autoTranslateWired = 'true';
+      });
+    }
+
     document.getElementById('heroForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const hasFile = document.getElementById('heroImage').files.length > 0;
@@ -977,6 +1001,7 @@
           const el = document.getElementById('home_' + key);
           if (el) el.value = data[key] || '';
         });
+        wireBilingualAutoTranslate(HOME_FIELDS, 'home_');
       } catch (error) {
         showMessage('Failed to load home page content: ' + error.message, 'error');
       }
@@ -1020,6 +1045,7 @@
           const el = document.getElementById('settings_' + key);
           if (el) el.value = data[key] || '';
         });
+        wireBilingualAutoTranslate(SETTINGS_FIELDS, 'settings_');
       } catch (error) {
         showMessage('Failed to load site settings: ' + error.message, 'error');
       }
@@ -1061,6 +1087,7 @@
           const el = document.getElementById('about_' + key);
           if (el) el.value = data[key] || '';
         });
+        wireBilingualAutoTranslate(ABOUT_FIELDS, 'about_');
       } catch (error) {
         showMessage('Failed to load about page content: ' + error.message, 'error');
       }
@@ -1127,6 +1154,7 @@
           const el = document.getElementById('murals_' + key);
           if (el) el.value = data[key] || '';
         });
+        wireBilingualAutoTranslate(MURALS_FIELDS, 'murals_');
       } catch (error) {
         showMessage('Failed to load murals page content: ' + error.message, 'error');
       }
@@ -1161,6 +1189,7 @@
           const el = document.getElementById('gp_' + key);
           if (el) el.value = data[key] || '';
         });
+        wireBilingualAutoTranslate(GALLERY_PAGE_FIELDS, 'gp_');
       } catch (error) {
         showMessage('Failed to load gallery page header: ' + error.message, 'error');
       }
@@ -1203,6 +1232,7 @@
           const el = document.getElementById('cp_' + key);
           if (el) el.value = data[key] || '';
         });
+        wireBilingualAutoTranslate(CONTACT_PAGE_FIELDS, 'cp_');
       } catch (error) {
         showMessage('Failed to load contact page content: ' + error.message, 'error');
       }
