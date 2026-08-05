@@ -394,6 +394,7 @@
   </div>
 
   <script>
+    const R2_URL = 'https://pub-3de82c1349074b549aa0874178c4013f.r2.dev/picazo-images/';
     let currentEditId = null;
     let isHeroEdit = false;
     let instrLang = 'en';
@@ -651,7 +652,8 @@
           document.getElementById('tag').value = item.tag || '';
           document.getElementById('tagEn').value = item.tagEn || '';
           document.getElementById('featured').checked = !!item.featured;
-          document.getElementById('imagePreview').src = `assets/images/${item.image}`;
+          const imgSrc = item.image.startsWith('http') ? item.image : (item.image.startsWith('gallery-') ? R2_URL + item.image : 'assets/images/' + item.image);
+          document.getElementById('imagePreview').src = imgSrc;
           document.getElementById('imagePreview').classList.remove('hidden');
           document.getElementById('modal').classList.add('active');
         })

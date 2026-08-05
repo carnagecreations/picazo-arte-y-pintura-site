@@ -1,3 +1,5 @@
+const R2_URL = 'https://pub-3de82c1349074b549aa0874178c4013f.r2.dev/picazo-images/';
+
 // Fetch and render gallery items from API
 async function loadGallery() {
   try {
@@ -10,13 +12,16 @@ async function loadGallery() {
 
     gallery.innerHTML = items
       .slice(0, 6) // First 6 items for featured section
-      .map(item => `
+      .map(item => {
+        const imgSrc = item.image.startsWith('http') ? item.image : (item.image.startsWith('gallery-') ? R2_URL + item.image : 'assets/images/' + item.image);
+        return `
         <figure class="piece" data-lightbox data-caption="${item.caption}">
           <span class="tape">${item.tag}</span>
-          <img src="assets/images/${item.image}" alt="${item.caption}" loading="lazy">
+          <img src="${imgSrc}" alt="${item.caption}" loading="lazy">
           <figcaption>${item.caption}</figcaption>
         </figure>
-      `).join('');
+      `;
+      }).join('');
 
     initLightbox();
   } catch (error) {
@@ -37,20 +42,24 @@ async function loadFullGallery() {
     // First section - 7 items
     const section1 = items.slice(0, 7);
     gallery.innerHTML = section1
-      .map(item => `
+      .map(item => {
+        const imgSrc = item.image.startsWith('http') ? item.image : (item.image.startsWith('gallery-') ? R2_URL + item.image : 'assets/images/' + item.image);
+        return `
         <figure class="piece" data-lightbox data-caption="${item.caption}">
           <span class="tape">${item.tag}</span>
-          <img src="assets/images/${item.image}" alt="${item.caption}" loading="lazy">
+          <img src="${imgSrc}" alt="${item.caption}" loading="lazy">
           <figcaption>${item.caption}</figcaption>
         </figure>
-      `).join('');
+      `;
+      }).join('');
 
     // Feature break (item 19 - Fruit stairwell)
     const featureItem = items.find(i => i.id === '19');
     const featureBreak = document.querySelector('.feature-break');
     if (featureBreak && featureItem) {
+      const featureImgSrc = featureItem.image.startsWith('http') ? featureItem.image : (featureItem.image.startsWith('gallery-') ? R2_URL + featureItem.image : 'assets/images/' + featureItem.image);
       featureBreak.innerHTML = `
-        <img src="assets/images/${featureItem.image}" alt="${featureItem.caption}">
+        <img src="${featureImgSrc}" alt="${featureItem.caption}">
         <div class="feature-break-cap">
           <span class="tape">${featureItem.tag}</span>
           <p>${featureItem.caption}</p>
@@ -65,21 +74,25 @@ async function loadFullGallery() {
     if (section2Grid) {
       const section2 = items.slice(7);
       section2Grid.innerHTML = section2
-        .map(item => `
+        .map(item => {
+          const imgSrc = item.image.startsWith('http') ? item.image : (item.image.startsWith('gallery-') ? R2_URL + item.image : 'assets/images/' + item.image);
+          return `
           <figure class="piece" data-lightbox data-caption="${item.caption}">
             <span class="tape">${item.tag}</span>
-            <img src="assets/images/${item.image}" alt="${item.caption}" loading="lazy">
+            <img src="${imgSrc}" alt="${item.caption}" loading="lazy">
             <figcaption>${item.caption}</figcaption>
           </figure>
-        `).join('');
+        `;
+        }).join('');
     }
 
     // Feature break 2 (item 20 - Two turtles)
     const featureItem2 = items.find(i => i.id === '20');
     const featureBreak2 = document.querySelector('.feature-break:nth-of-type(2)');
     if (featureBreak2 && featureItem2) {
+      const feature2ImgSrc = featureItem2.image.startsWith('http') ? featureItem2.image : (featureItem2.image.startsWith('gallery-') ? R2_URL + featureItem2.image : 'assets/images/' + featureItem2.image);
       featureBreak2.innerHTML = `
-        <img src="assets/images/${featureItem2.image}" alt="${featureItem2.caption}">
+        <img src="${feature2ImgSrc}" alt="${featureItem2.caption}">
         <div class="feature-break-cap">
           <span class="tape">${featureItem2.tag}</span>
           <p>${featureItem2.caption}</p>
@@ -106,7 +119,10 @@ async function loadHeroImages() {
     if (!heroBg) return;
 
     heroBg.innerHTML = items
-      .map(item => `<div class="slide" style="background-image:url('assets/images/${item.image}')"></div>`)
+      .map(item => {
+        const imgSrc = item.image.startsWith('http') ? item.image : (item.image.startsWith('gallery-') || item.image.startsWith('hero-') ? R2_URL + item.image : 'assets/images/' + item.image);
+        return `<div class="slide" style="background-image:url('${imgSrc}')"></div>`;
+      })
       .join('');
   } catch (error) {
     console.error('Error loading hero images:', error);
