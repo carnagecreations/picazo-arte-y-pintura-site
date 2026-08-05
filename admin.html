@@ -411,22 +411,22 @@
 
     document.getElementById('itemForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const formData = new FormData();
-      formData.append('caption', document.getElementById('caption').value);
-      formData.append('captionEn', document.getElementById('captionEn').value);
-      formData.append('tag', document.getElementById('tag').value);
-      formData.append('tagEn', document.getElementById('tagEn').value);
-      formData.append('featured', document.getElementById('featured').checked);
-      if (document.getElementById('image').files.length > 0) {
-        formData.append('image', document.getElementById('image').files[0]);
-      }
+      const body = {
+        image: document.getElementById('image').value || 'gallery-new-item.jpg',
+        caption: document.getElementById('caption').value,
+        captionEn: document.getElementById('captionEn').value,
+        tag: document.getElementById('tag').value,
+        tagEn: document.getElementById('tagEn').value,
+        featured: document.getElementById('featured').checked
+      };
 
       try {
         const url = currentEditId ? `/api/gallery/${currentEditId}` : '/api/gallery';
         const method = currentEditId ? 'PUT' : 'POST';
         const res = await fetch(url, {
           method,
-          body: formData
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
         });
         if (res.ok) {
           closeModal();
@@ -439,6 +439,28 @@
         showMessage('Error: ' + error.message, 'error', 'modalMessage');
       }
     });
+
+    async function autoTranslate(sourceId, targetId, targetLang) {
+      const sourceText = document.getElementById(sourceId).value.trim();
+      if (!sourceText) {
+        document.getElementById(targetId).value = '';
+        return;
+      }
+      try {
+        const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(sourceText)}&langpair=${targetLang}`);
+        const data = await res.json();
+        if (data.responseStatus === 200) {
+          document.getElementById(targetId).value = data.responseData.translatedText;
+        }
+      } catch (e) {
+        console.log('Translation skipped (offline)');
+      }
+    }
+
+    document.getElementById('caption').addEventListener('input', () => autoTranslate('caption', 'captionEn', 'es|en'));
+    document.getElementById('captionEn').addEventListener('input', () => autoTranslate('captionEn', 'caption', 'en|es'));
+    document.getElementById('tag').addEventListener('input', () => autoTranslate('tag', 'tagEn', 'es|en'));
+    document.getElementById('tagEn').addEventListener('input', () => autoTranslate('tagEn', 'tag', 'en|es'));
 
     document.getElementById('heroForm').addEventListener('submit', async (e) => {
       e.preventDefault();
