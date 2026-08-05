@@ -127,9 +127,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // Auth
     if (pathname === '/api/auth' && method === 'POST') {
       const body = await request.json() as any;
+      const pwd = (body.password || '').trim();
+      const isValid = pwd === 'picazo2024';
       return new Response(
-        JSON.stringify(body.password === 'picazo2024' ? { success: true } : { error: 'Invalid' }),
-        { status: body.password === 'picazo2024' ? 200 : 401, headers: corsHeaders }
+        JSON.stringify(isValid ? { success: true } : { error: 'Invalid password' }),
+        { status: isValid ? 200 : 401, headers: corsHeaders }
       );
     }
 
