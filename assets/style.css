@@ -467,6 +467,14 @@ section:not(.hero):not(.cta-band):nth-of-type(even){ background:var(--paper-2); 
 .gallery-grid .piece:has(img[src*="gallery-01-mural-building-aerial"]){ grid-column:1 / -1 !important; grid-row:span 1 !important; }
 .gallery-grid .piece img[src*="gallery-01-mural-building-aerial"]{ height:auto !important; aspect-ratio:4/3 !important; }
 
+/* a trailing solo piece in the last row otherwise sits beside two empty
+   grid cells — give it the full row instead so the wall ends cleanly.
+   grid-column spans on earlier pieces shift where rows actually break,
+   so this can't be computed from DOM position (nth-child) — it's
+   targeted at render time instead, see script.js */
+.gallery-grid.tight .piece.solo-row{ grid-column:1 / -1; }
+.gallery-grid.tight .piece.solo-row img{ aspect-ratio:3/1; }
+
 /* a full-bleed moment that breaks the grid entirely — one killer piece,
    edge to edge, because some of these deserve more than a thumbnail */
 .feature-break{

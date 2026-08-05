@@ -25,6 +25,7 @@ async function loadGallery() {
         </figure>
       `).join('');
 
+    markSoloTrailingRow(gallery);
     initLightbox();
   } catch (error) {
     console.error('Error loading gallery:', error);
@@ -51,6 +52,7 @@ async function loadFullGallery() {
           <figcaption>${item.caption}</figcaption>
         </figure>
       `).join('');
+    markSoloTrailingRow(gallery);
 
     // Feature break (item 19 - Fruit stairwell)
     const featureItem = items.find(i => i.id === '19');
@@ -79,6 +81,7 @@ async function loadFullGallery() {
             <figcaption>${item.caption}</figcaption>
           </figure>
         `).join('');
+      markSoloTrailingRow(section2Grid);
     }
 
     // Feature break 2 (item 20 - Two turtles)
@@ -117,6 +120,19 @@ async function loadHeroImages() {
       .join('');
   } catch (error) {
     console.error('Error loading hero images:', error);
+  }
+}
+
+// If the grid's last piece landed alone in the final row (leaving empty
+// cells beside it), let it span the full row instead.
+function markSoloTrailingRow(gridEl) {
+  if (!gridEl) return;
+  const pieces = gridEl.querySelectorAll('.piece');
+  if (pieces.length < 2) return;
+  const last = pieces[pieces.length - 1];
+  const prev = pieces[pieces.length - 2];
+  if (last.offsetTop > prev.offsetTop) {
+    last.classList.add('solo-row');
   }
 }
 
