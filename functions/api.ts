@@ -137,22 +137,5 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     return new Response(JSON.stringify({ success: true, items: hero }), { status: 201, headers: corsHeaders });
   }
 
-  // Auth endpoint
-  if (pathname === '/api/auth' && (method === 'POST' || method === 'OPTIONS')) {
-    if (method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
-    }
-    try {
-      const body = await request.json() as any;
-      const password = body?.password;
-      if (password === 'picazo2024') {
-        return new Response(JSON.stringify({ success: true }), { headers: corsHeaders });
-      }
-      return new Response(JSON.stringify({ error: 'Invalid password' }), { status: 401, headers: corsHeaders });
-    } catch (e) {
-      return new Response(JSON.stringify({ error: 'Invalid request', details: String(e) }), { status: 400, headers: corsHeaders });
-    }
-  }
-
   return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: corsHeaders });
 };
