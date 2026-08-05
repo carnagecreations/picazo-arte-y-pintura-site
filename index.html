@@ -47,15 +47,15 @@
 <section class="hero hero-immersive">
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="wrap hero-overlay">
-    <div class="eyebrow">Yuma, AZ &middot; Artista Visual</div>
-    <h1>Muros que detienen el tráfico. Lienzos que llenan un cuarto.</h1>
+    <div class="eyebrow" id="heroEyebrow">Yuma, AZ &middot; Artista Visual</div>
+    <h1 id="heroHeading">Muros que detienen el tráfico. Lienzos que llenan un cuarto.</h1>
     <svg class="brush" viewBox="0 0 340 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <path d="M3 16C40 4 80 20 120 10C160 0 200 18 240 8C270 1 300 14 337 6" stroke="var(--gold)" stroke-width="5" stroke-linecap="round"/>
 </svg>
-    <p class="lede">Picazo Arte y Pintura pinta murales a gran escala, retratos personalizados y obras en lienzo para casas, restaurantes y negocios en Yuma, Somerton y la región fronteriza — cada pieza pintada a mano, en el lugar, a todo color.</p>
+    <p class="lede" id="heroLede">Picazo Arte y Pintura pinta murales a gran escala, retratos personalizados y obras en lienzo para casas, restaurantes y negocios en Yuma, Somerton y la región fronteriza — cada pieza pintada a mano, en el lugar, a todo color.</p>
     <div class="hero-actions">
-      <a class="btn btn-solid" href="gallery.html">Ver la Galería</a>
-      <a class="btn btn-outline" href="contact.html">Solicitar un Encargo</a>
+      <a class="btn btn-solid" href="gallery.html" id="heroCtaPrimary">Ver la Galería</a>
+      <a class="btn btn-outline" href="contact.html" id="heroCtaSecondary">Solicitar un Encargo</a>
     </div>
   </div>
 </section>
@@ -81,11 +81,11 @@
   </div>
 </div>
 
-<div class="stats">
-  <div class="stat"><div class="num">3.3K+</div><div class="lbl">Seguidores y creciendo</div></div>
-  <div class="stat"><div class="num">2</div><div class="lbl">Ciudades pintadas &mdash; Yuma y Somerton, AZ</div></div>
-  <div class="stat"><div class="num">100%</div><div class="lbl">Pintado a mano, en el lugar</div></div>
-  <div class="stat"><div class="num">♥</div><div class="lbl">Cada muro hecho con cariño para el cliente</div></div>
+<div class="stats" id="statsRow">
+  <div class="stat"><div class="num" data-stat="1num">3.3K+</div><div class="lbl" data-stat="1label">Seguidores y creciendo</div></div>
+  <div class="stat"><div class="num" data-stat="2num">2</div><div class="lbl" data-stat="2label">Ciudades pintadas &mdash; Yuma y Somerton, AZ</div></div>
+  <div class="stat"><div class="num" data-stat="3num">100%</div><div class="lbl" data-stat="3label">Pintado a mano, en el lugar</div></div>
+  <div class="stat"><div class="num" data-stat="4num">♥</div><div class="lbl" data-stat="4label">Cada muro hecho con cariño para el cliente</div></div>
 </div>
 
 <section>
@@ -150,5 +150,6 @@
 </div>
 <script src="assets/script.js"></script>
 <script src="assets/gallery.js"></script>
+<script src="assets/home.js"></script>
 </body>
 </html>

@@ -52,15 +52,15 @@
     <div class="slide" style="background-image:url('assets/images/gallery-11-mural-vamos-mexico.jpg')"></div>
   </div>
   <div class="wrap hero-overlay">
-    <div class="eyebrow">Yuma, AZ &middot; Visual Artist</div>
-    <h1>Walls that stop traffic. Canvases that hold a room.</h1>
+    <div class="eyebrow" id="heroEyebrow">Yuma, AZ &middot; Visual Artist</div>
+    <h1 id="heroHeading">Walls that stop traffic. Canvases that hold a room.</h1>
     <svg class="brush" viewBox="0 0 340 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <path d="M3 16C40 4 80 20 120 10C160 0 200 18 240 8C270 1 300 14 337 6" stroke="var(--gold)" stroke-width="5" stroke-linecap="round"/>
 </svg>
-    <p class="lede">Picazo Arte y Pintura paints large-scale murals, custom portraits, and canvas work for homes, restaurants, and businesses across Yuma, Somerton, and the border region — every piece hand-painted, on-site, in color.</p>
+    <p class="lede" id="heroLede">Picazo Arte y Pintura paints large-scale murals, custom portraits, and canvas work for homes, restaurants, and businesses across Yuma, Somerton, and the border region — every piece hand-painted, on-site, in color.</p>
     <div class="hero-actions">
-      <a class="btn btn-solid" href="gallery-en.html">View the Gallery</a>
-      <a class="btn btn-outline" href="contact-en.html">Start a Commission</a>
+      <a class="btn btn-solid" href="gallery-en.html" id="heroCtaPrimary">View the Gallery</a>
+      <a class="btn btn-outline" href="contact-en.html" id="heroCtaSecondary">Start a Commission</a>
     </div>
   </div>
 </section>
@@ -86,11 +86,11 @@
   </div>
 </div>
 
-<div class="stats">
-  <div class="stat"><div class="num">3.3K+</div><div class="lbl">Followers &amp; growing</div></div>
-  <div class="stat"><div class="num">2</div><div class="lbl">Cities painted &mdash; Yuma &amp; Somerton, AZ</div></div>
-  <div class="stat"><div class="num">100%</div><div class="lbl">Hand-painted, on-site</div></div>
-  <div class="stat"><div class="num">♥</div><div class="lbl">Every wall done with love for the client</div></div>
+<div class="stats" id="statsRow">
+  <div class="stat"><div class="num" data-stat="1num">3.3K+</div><div class="lbl" data-stat="1label">Followers &amp; growing</div></div>
+  <div class="stat"><div class="num" data-stat="2num">2</div><div class="lbl" data-stat="2label">Cities painted &mdash; Yuma &amp; Somerton, AZ</div></div>
+  <div class="stat"><div class="num" data-stat="3num">100%</div><div class="lbl" data-stat="3label">Hand-painted, on-site</div></div>
+  <div class="stat"><div class="num" data-stat="4num">♥</div><div class="lbl" data-stat="4label">Every wall done with love for the client</div></div>
 </div>
 
 <section>
@@ -185,5 +185,6 @@
   <div class="cap"></div>
 </div>
 <script src="assets/script.js"></script>
+<script src="assets/home.js"></script>
 </body>
 </html>

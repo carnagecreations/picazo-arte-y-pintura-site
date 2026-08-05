@@ -27,6 +27,31 @@ const INITIAL_HERO = [
   { image: "gallery-11-mural-vamos-mexico.jpg", caption: "En el lugar, a todo color" }
 ];
 
+const INITIAL_HOME = {
+  heroEyebrow: "Yuma, AZ · Artista Visual",
+  heroEyebrowEn: "Yuma, AZ · Visual Artist",
+  heroHeading: "Muros que detienen el tráfico. Lienzos que llenan un cuarto.",
+  heroHeadingEn: "Walls that stop traffic. Canvases that hold a room.",
+  heroLede: "Picazo Arte y Pintura pinta murales a gran escala, retratos personalizados y obras en lienzo para casas, restaurantes y negocios en Yuma, Somerton y la región fronteriza — cada pieza pintada a mano, en el lugar, a todo color.",
+  heroLedeEn: "Picazo Arte y Pintura paints large-scale murals, custom portraits, and canvas work for homes, restaurants, and businesses across Yuma, Somerton, and the border region — every piece hand-painted, on-site, in color.",
+  heroCtaPrimary: "Ver la Galería",
+  heroCtaPrimaryEn: "View the Gallery",
+  heroCtaSecondary: "Solicitar un Encargo",
+  heroCtaSecondaryEn: "Start a Commission",
+  stat1Num: "3.3K+",
+  stat1Label: "Seguidores y creciendo",
+  stat1LabelEn: "Followers & growing",
+  stat2Num: "2",
+  stat2Label: "Ciudades pintadas — Yuma y Somerton, AZ",
+  stat2LabelEn: "Cities painted — Yuma & Somerton, AZ",
+  stat3Num: "100%",
+  stat3Label: "Pintado a mano, en el lugar",
+  stat3LabelEn: "Hand-painted, on-site",
+  stat4Num: "♥",
+  stat4Label: "Cada muro hecho con cariño para el cliente",
+  stat4LabelEn: "Every wall done with love for the client"
+};
+
 export const onRequest = async (context) => {
   const request = context.request;
   const url = new URL(request.url);
@@ -192,6 +217,21 @@ export const onRequest = async (context) => {
         await env.GALLERY?.put('hero', JSON.stringify(hero));
       }
       return new Response(JSON.stringify({ success: true }), { status: 201, headers });
+    }
+
+    if (pathname.includes('/home') && method === 'GET') {
+      const stored = await env.GALLERY?.get('home');
+      const home = stored ? { ...INITIAL_HOME, ...JSON.parse(stored) } : INITIAL_HOME;
+      return new Response(JSON.stringify(home), { headers });
+    }
+
+    if (pathname.includes('/home') && method === 'PUT') {
+      const stored = await env.GALLERY?.get('home');
+      const home = stored ? { ...INITIAL_HOME, ...JSON.parse(stored) } : INITIAL_HOME;
+      const body = await request.json();
+      const updated = { ...home, ...body };
+      await env.GALLERY?.put('home', JSON.stringify(updated));
+      return new Response(JSON.stringify(updated), { headers });
     }
 
     return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });

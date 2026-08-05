@@ -173,5 +173,29 @@
       "image": "gallery-11-mural-vamos-mexico.jpg",
       "caption": "En el lugar, a todo color"
     }
-  ]
+  ],
+  "home": {
+    "heroEyebrow": "Yuma, AZ · Artista Visual",
+    "heroEyebrowEn": "Yuma, AZ · Visual Artist",
+    "heroHeading": "Muros que detienen el tráfico. Lienzos que llenan un cuarto.",
+    "heroHeadingEn": "Walls that stop traffic. Canvases that hold a room.",
+    "heroLede": "Picazo Arte y Pintura pinta murales a gran escala, retratos personalizados y obras en lienzo para casas, restaurantes y negocios en Yuma, Somerton y la región fronteriza — cada pieza pintada a mano, en el lugar, a todo color.",
+    "heroLedeEn": "Picazo Arte y Pintura paints large-scale murals, custom portraits, and canvas work for homes, restaurants, and businesses across Yuma, Somerton, and the border region — every piece hand-painted, on-site, in color.",
+    "heroCtaPrimary": "Ver la Galería",
+    "heroCtaPrimaryEn": "View the Gallery",
+    "heroCtaSecondary": "Solicitar un Encargo",
+    "heroCtaSecondaryEn": "Start a Commission",
+    "stat1Num": "3.3K+",
+    "stat1Label": "Seguidores y creciendo",
+    "stat1LabelEn": "Followers & growing",
+    "stat2Num": "2",
+    "stat2Label": "Ciudades pintadas — Yuma y Somerton, AZ",
+    "stat2LabelEn": "Cities painted — Yuma & Somerton, AZ",
+    "stat3Num": "100%",
+    "stat3Label": "Pintado a mano, en el lugar",
+    "stat3LabelEn": "Hand-painted, on-site",
+    "stat4Num": "♥",
+    "stat4Label": "Cada muro hecho con cariño para el cliente",
+    "stat4LabelEn": "Every wall done with love for the client"
+  }
 }

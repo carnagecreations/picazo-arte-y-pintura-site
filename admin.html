@@ -318,6 +318,7 @@
     <div class="tab-buttons">
       <button class="tab-btn active" data-tab="gallery">Gallery Items</button>
       <button class="tab-btn" data-tab="hero">Hero Images</button>
+      <button class="tab-btn" data-tab="home">Home Page</button>
     </div>
 
     <div class="tab-content active" id="gallery-tab">
@@ -328,6 +329,29 @@
     <div class="tab-content" id="hero-tab">
       <button id="addHeroBtn" onclick="openAddHeroModal()">+ Add Hero Image</button>
       <div class="gallery-grid" id="heroGrid"></div>
+    </div>
+
+    <div class="tab-content" id="home-tab">
+      <form id="homeForm" style="background: white; padding: 1.5rem; border-radius: 8px; max-width: 800px;">
+        <h3 style="margin-bottom: 1rem;">Hero Section</h3>
+        <div class="form-group"><label>Eyebrow (Spanish)</label><input type="text" id="home_heroEyebrow"></div>
+        <div class="form-group"><label>Eyebrow (English)</label><input type="text" id="home_heroEyebrowEn"></div>
+        <div class="form-group"><label>Heading (Spanish)</label><input type="text" id="home_heroHeading"></div>
+        <div class="form-group"><label>Heading (English)</label><input type="text" id="home_heroHeadingEn"></div>
+        <div class="form-group"><label>Lede paragraph (Spanish)</label><textarea id="home_heroLede"></textarea></div>
+        <div class="form-group"><label>Lede paragraph (English)</label><textarea id="home_heroLedeEn"></textarea></div>
+        <div class="form-group"><label>Primary button label (Spanish)</label><input type="text" id="home_heroCtaPrimary"></div>
+        <div class="form-group"><label>Primary button label (English)</label><input type="text" id="home_heroCtaPrimaryEn"></div>
+        <div class="form-group"><label>Secondary button label (Spanish)</label><input type="text" id="home_heroCtaSecondary"></div>
+        <div class="form-group"><label>Secondary button label (English)</label><input type="text" id="home_heroCtaSecondaryEn"></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Stats Row</h3>
+        <div id="statsFields"></div>
+
+        <div class="modal-actions" style="max-width: 300px;">
+          <button type="submit">Save Home Page</button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -448,6 +472,7 @@
           document.getElementById('adminPanel').classList.remove('hidden');
           loadGallery();
           loadHero();
+          loadHome();
         } else {
           showMessage('Invalid password', 'error', 'loginError');
         }
@@ -635,6 +660,71 @@
         showMessage('Failed to load hero images: ' + error.message, 'error');
       }
     }
+
+    function buildStatsFields() {
+      const container = document.getElementById('statsFields');
+      container.innerHTML = [1, 2, 3, 4].map(i => `
+        <div class="form-group">
+          <label>Stat ${i} number</label>
+          <input type="text" id="home_stat${i}Num">
+        </div>
+        <div class="form-group">
+          <label>Stat ${i} label (Spanish)</label>
+          <input type="text" id="home_stat${i}Label">
+        </div>
+        <div class="form-group">
+          <label>Stat ${i} label (English)</label>
+          <input type="text" id="home_stat${i}LabelEn">
+        </div>
+      `).join('');
+    }
+
+    const HOME_FIELDS = [
+      'heroEyebrow', 'heroEyebrowEn', 'heroHeading', 'heroHeadingEn',
+      'heroLede', 'heroLedeEn', 'heroCtaPrimary', 'heroCtaPrimaryEn',
+      'heroCtaSecondary', 'heroCtaSecondaryEn',
+      'stat1Num', 'stat1Label', 'stat1LabelEn',
+      'stat2Num', 'stat2Label', 'stat2LabelEn',
+      'stat3Num', 'stat3Label', 'stat3LabelEn',
+      'stat4Num', 'stat4Label', 'stat4LabelEn'
+    ];
+
+    async function loadHome() {
+      buildStatsFields();
+      try {
+        const res = await fetch('/api/home');
+        const data = await res.json();
+        HOME_FIELDS.forEach(key => {
+          const el = document.getElementById('home_' + key);
+          if (el) el.value = data[key] || '';
+        });
+      } catch (error) {
+        showMessage('Failed to load home page content: ' + error.message, 'error');
+      }
+    }
+
+    document.getElementById('homeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {};
+      HOME_FIELDS.forEach(key => {
+        const el = document.getElementById('home_' + key);
+        if (el) body[key] = el.value;
+      });
+      try {
+        const res = await fetch('/api/home', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (res.ok) {
+          showMessage('Home page content saved successfully', 'success');
+        } else {
+          showMessage('Failed to save home page content', 'error');
+        }
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
 
     function openAddModal() {
       currentEditId = null;
