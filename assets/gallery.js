@@ -1,7 +1,7 @@
 function getImageUrl(filename) {
   if (!filename) return 'assets/images/placeholder.jpg';
   if (filename.startsWith('http')) return filename;
-  if (/gallery-\d+\.\w+/.test(filename)) return '/api/image/' + filename; // Timestamp pattern = uploaded, serve via API
+  if (/gallery-\d+\.\w+/.test(filename)) return 'https://picazo-site.shiann.workers.dev/api/image/' + filename; // Timestamp pattern = uploaded, serve via Worker
   return 'assets/images/' + filename;
 }
 
