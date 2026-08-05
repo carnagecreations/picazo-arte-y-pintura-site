@@ -47,6 +47,14 @@ export default {
     }
 
     try {
+      if (pathname.includes('/test')) {
+        return new Response(JSON.stringify({
+          hasGallery: !!env.GALLERY,
+          hasImages: !!env.IMAGES,
+          bindings: Object.keys(env)
+        }), { headers });
+      }
+
       if (pathname.includes('/auth')) {
         const body = await request.json();
         const isValid = body.password === 'picazo2024';
@@ -182,18 +190,18 @@ export default {
       }
 
       if (pathname.includes('/image/')) {
-        const filename = pathname.split('/image/')[1];
+        const filename = pathname.split('/image/')[1].replace(/^\//, ''); // Remove leading slash
         try {
           const object = await env.IMAGES.get(filename);
-          if (!object) return new Response('Not found', { status: 404 });
+          if (!object) return new Response(JSON.stringify({ error: `Not found: ${filename}`, pathname }), { status: 404, headers });
           return new Response(object.body, {
             headers: {
               'Content-Type': 'image/jpeg',
               'Cache-Control': 'public, max-age=31536000'
             }
           });
-        } catch (err) {
-          return new Response('Error loading image', { status: 500 });
+        } catch (err: any) {
+          return new Response(JSON.stringify({ error: err.message, filename }), { status: 500, headers });
         }
       }
 
