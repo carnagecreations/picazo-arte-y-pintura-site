@@ -33,7 +33,8 @@ export const onRequest = async (context) => {
   const pathname = url.pathname;
   const method = request.method;
   const headers = { 'Content-Type': 'application/json' };
-  const env = context.env as any;
+  const env = context.env;
+  const bucket = env.IMAGES;
 
   try {
     if (pathname.includes('/auth')) {
@@ -127,7 +128,7 @@ export const onRequest = async (context) => {
             const ext = imageFile.name.split('.').pop();
             const filename = `gallery-${Date.now()}.${ext}`;
             const buffer = await imageFile.arrayBuffer();
-            await (env as any).IMAGES.put(filename, buffer);
+            await bucket.put(filename, buffer);
             body.image = filename;
           } catch (uploadErr: any) {
             console.error('R2 upload error:', uploadErr?.message || uploadErr);
