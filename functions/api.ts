@@ -53,7 +53,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
   const url = new URL(request.url);
   const method = request.method;
-  const pathname = url.pathname;
+  let pathname = url.pathname;
+
+  // Cloudflare Pages might pass pathname without /api prefix
+  if (!pathname.startsWith('/api')) {
+    pathname = '/api' + pathname;
+  }
 
   const corsHeaders = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' };
 
