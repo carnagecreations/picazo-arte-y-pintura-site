@@ -279,14 +279,41 @@
     <div class="message" id="message"></div>
 
     <div style="background: #f0f4ff; border-left: 4px solid #667eea; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
-      <h3 style="color: #667eea; margin-top: 0;">How to Use This Dashboard</h3>
-      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="color: #667eea; margin: 0;" id="instrTitle">How to Use This Dashboard</h3>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="lang-btn active" onclick="setInstructionLang('en')">EN</button>
+          <button class="lang-btn" onclick="setInstructionLang('es')">ES</button>
+        </div>
+      </div>
+      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;" id="instrList">
         <li><strong>Gallery Items:</strong> Add, edit, or delete artwork with captions in Spanish and English</li>
         <li><strong>Featured:</strong> Check the "Featured Item" box to highlight work on the home page</li>
         <li><strong>Hero Images:</strong> Manage the rotating banner images on the home page hero section</li>
         <li><strong>Image Names:</strong> Keep existing image names when updating captions (e.g., "gallery-01-mural-building-aerial.jpg")</li>
       </ul>
     </div>
+    <style>
+      .lang-btn {
+        padding: 0.4rem 0.8rem;
+        border: 1px solid #667eea;
+        background: white;
+        color: #667eea;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+      .lang-btn.active {
+        background: #667eea;
+        color: white;
+      }
+      .lang-btn:hover {
+        background: #667eea;
+        color: white;
+      }
+    </style>
 
     <div class="tab-buttons">
       <button class="tab-btn active" data-tab="gallery">Gallery Items</button>
@@ -369,6 +396,36 @@
   <script>
     let currentEditId = null;
     let isHeroEdit = false;
+    let instrLang = 'en';
+
+    const instructions = {
+      en: {
+        title: 'How to Use This Dashboard',
+        items: [
+          '<strong>Gallery Items:</strong> Add, edit, or delete artwork with captions in Spanish and English',
+          '<strong>Featured:</strong> Check the "Featured Item" box to highlight work on the home page',
+          '<strong>Hero Images:</strong> Manage the rotating banner images on the home page hero section',
+          '<strong>Image Names:</strong> Keep existing image names when updating captions (e.g., "gallery-01-mural-building-aerial.jpg")'
+        ]
+      },
+      es: {
+        title: 'Cómo Usar Este Panel',
+        items: [
+          '<strong>Elementos de Galería:</strong> Agregar, editar o eliminar obras de arte con títulos en español e inglés',
+          '<strong>Destacado:</strong> Marca la casilla "Elemento Destacado" para resaltar el trabajo en la página de inicio',
+          '<strong>Imágenes del Hero:</strong> Gestiona las imágenes del banner rotatorio en la sección hero de la página de inicio',
+          '<strong>Nombres de Imágenes:</strong> Mantén los nombres de imagen existentes al actualizar títulos (ej: "gallery-01-mural-building-aerial.jpg")'
+        ]
+      }
+    };
+
+    function setInstructionLang(lang) {
+      instrLang = lang;
+      document.getElementById('instrTitle').textContent = instructions[lang].title;
+      document.getElementById('instrList').innerHTML = instructions[lang].items.map(item => `<li>${item}</li>`).join('');
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
