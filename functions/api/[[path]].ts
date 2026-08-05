@@ -37,6 +37,14 @@ export const onRequest = async (context) => {
   const bucket = env.IMAGES;
 
   try {
+    if (pathname.includes('/bindings-test')) {
+      return new Response(JSON.stringify({
+        hasGallery: !!env.GALLERY,
+        hasImages: !!bucket,
+        envKeys: Object.keys(env)
+      }), { headers });
+    }
+
     if (pathname.includes('/auth')) {
       const body = await request.json();
       return new Response(JSON.stringify({ success: body.password === 'picazo2024' }), {
