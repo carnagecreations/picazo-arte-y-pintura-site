@@ -59,7 +59,34 @@ export const onRequest = async (context) => {
     if (pathname.includes('/gallery') && method === 'POST') {
       const stored = await env.GALLERY?.get('gallery');
       const gallery = stored ? JSON.parse(stored) : INITIAL_GALLERY;
-      const body = await request.json();
+
+      const contentType = request.headers.get('content-type') || '';
+      let body: any = {};
+
+      if (contentType.includes('multipart/form-data')) {
+        const formData = await request.formData();
+        body = {
+          caption: formData.get('caption'),
+          captionEn: formData.get('captionEn'),
+          tag: formData.get('tag'),
+          tagEn: formData.get('tagEn'),
+          featured: formData.get('featured') === 'true'
+        };
+
+        const imageFile = formData.get('image') as File;
+        if (imageFile && imageFile.size > 0) {
+          const ext = imageFile.name.split('.').pop();
+          const filename = `gallery-${Date.now()}.${ext}`;
+          await env.IMAGES?.put(filename, imageFile);
+          body.image = filename;
+        } else {
+          body.image = formData.get('existingImage') || 'gallery-new-item.jpg';
+        }
+      } else {
+        body = await request.json();
+        body.image = body.image || 'gallery-new-item.jpg';
+      }
+
       const newId = String(Math.max(...gallery.map((g: any) => parseInt(g.id) || 0)) + 1);
       gallery.push({ id: newId, ...body });
       await env.GALLERY?.put('gallery', JSON.stringify(gallery));

@@ -7,9 +7,18 @@ binding = "GALLERY"
 id = "picazo_gallery"
 preview_id = "picazo_gallery_preview"
 
+[[r2_buckets]]
+binding = "IMAGES"
+bucket_name = "picazo-images"
+preview_bucket_name = "picazo-images"
+
 [env.production]
 name = "picazo-site-production"
 
 [[env.production.kv_namespaces]]
 binding = "GALLERY"
 id = "picazo_gallery"
+
+[[env.production.r2_buckets]]
+binding = "IMAGES"
+bucket_name = "picazo-images"

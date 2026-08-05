@@ -468,29 +468,32 @@
 
     document.getElementById('itemForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const body = {
-        image: document.getElementById('image').value || 'gallery-new-item.jpg',
-        caption: document.getElementById('caption').value,
-        captionEn: document.getElementById('captionEn').value,
-        tag: document.getElementById('tag').value,
-        tagEn: document.getElementById('tagEn').value,
-        featured: document.getElementById('featured').checked
-      };
+      const formData = new FormData();
+      formData.append('caption', document.getElementById('caption').value);
+      formData.append('captionEn', document.getElementById('captionEn').value);
+      formData.append('tag', document.getElementById('tag').value);
+      formData.append('tagEn', document.getElementById('tagEn').value);
+      formData.append('featured', document.getElementById('featured').checked);
+
+      const imageFile = document.getElementById('image').files[0];
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
 
       try {
         const url = currentEditId ? `/api/gallery/${currentEditId}` : '/api/gallery';
         const method = currentEditId ? 'PUT' : 'POST';
         const res = await fetch(url, {
           method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
+          body: formData
         });
         if (res.ok) {
           closeModal();
           loadGallery();
           showMessage('Item saved successfully', 'success');
         } else {
-          showMessage('Failed to save item', 'error', 'modalMessage');
+          const errorData = await res.json().catch(() => ({}));
+          showMessage('Failed to save item: ' + (errorData.error || res.statusText), 'error', 'modalMessage');
         }
       } catch (error) {
         showMessage('Error: ' + error.message, 'error', 'modalMessage');
