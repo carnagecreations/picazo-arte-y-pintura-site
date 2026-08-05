@@ -1,3 +1,7 @@
+interface Env {
+  GALLERY: KVNamespace;
+}
+
 const INITIAL_GALLERY = [
   { id: "01", image: "gallery-01-mural-building-aerial.jpg", caption: "Repintado de edificio completo — Restaurante La Malquerida", captionEn: "Full building repaint — La Malquerida Restaurant", tag: "Murales", tagEn: "Murals", featured: true },
   { id: "02", image: "gallery-02-mural-wave-window.jpg", caption: "Mural de ojo-oceánico en ventana", captionEn: "Ocean eye mural in window", tag: "Murales", tagEn: "Murals" },
@@ -27,10 +31,6 @@ const INITIAL_HERO = [
   { image: "gallery-11-mural-vamos-mexico.jpg", caption: "En el lugar, a todo color" }
 ];
 
-interface Env {
-  GALLERY: KVNamespace;
-}
-
 async function getGallery(env: Env) {
   const stored = await env.GALLERY.get('gallery');
   return stored ? JSON.parse(stored) : INITIAL_GALLERY;
@@ -52,100 +52,90 @@ async function saveHero(env: Env, data: any) {
 export const onRequest: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
   const url = new URL(request.url);
+  const pathname = url.pathname;
   const method = request.method;
-  let pathname = url.pathname;
 
-  // Cloudflare Pages might pass pathname without /api prefix
-  if (!pathname.startsWith('/api')) {
-    pathname = '/api' + pathname;
-  }
-
-  const corsHeaders = { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' };
+  const headers = { 'Content-Type': 'application/json' };
 
   try {
+    // Auth endpoint
+    if (pathname.includes('auth')) {
+      const body = await request.json() as any;
+      const isValid = body?.password === 'picazo2024';
+      return new Response(JSON.stringify({ success: isValid }), {
+        status: isValid ? 200 : 401,
+        headers
+      });
+    }
+
     // Gallery list
-    if (pathname === '/api/gallery' && method === 'GET') {
-      return new Response(JSON.stringify(await getGallery(env)), { headers: corsHeaders });
+    if (pathname.includes('gallery') && pathname.split('/').length === 3 && method === 'GET') {
+      return new Response(JSON.stringify(await getGallery(env)), { headers });
     }
 
     // Gallery item
-    if (pathname.startsWith('/api/gallery/') && method === 'GET') {
+    if (pathname.includes('gallery') && pathname.split('/').length === 4 && method === 'GET') {
       const id = pathname.split('/')[3];
       const gallery = await getGallery(env);
       const item = gallery.find((g: any) => g.id === id);
       return new Response(JSON.stringify(item || { error: 'Not found' }), {
         status: item ? 200 : 404,
-        headers: corsHeaders
+        headers
       });
     }
 
-    // Create gallery item
-    if (pathname === '/api/gallery' && method === 'POST') {
+    // Create gallery
+    if (pathname.includes('gallery') && pathname.split('/').length === 3 && method === 'POST') {
       const gallery = await getGallery(env);
       const body = await request.json() as any;
       const newId = String(Math.max(...gallery.map((g: any) => parseInt(g.id) || 0)) + 1);
       const newItem = { id: newId, ...body };
       gallery.push(newItem);
       await saveGallery(env, gallery);
-      return new Response(JSON.stringify(newItem), { status: 201, headers: corsHeaders });
+      return new Response(JSON.stringify(newItem), { status: 201, headers });
     }
 
-    // Update gallery item
-    if (pathname.startsWith('/api/gallery/') && method === 'PUT') {
+    // Update gallery
+    if (pathname.includes('gallery') && pathname.split('/').length === 4 && method === 'PUT') {
       const id = pathname.split('/')[3];
       const gallery = await getGallery(env);
       const index = gallery.findIndex((g: any) => g.id === id);
-      if (index === -1) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: corsHeaders });
+      if (index === -1) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
       const body = await request.json() as any;
       gallery[index] = { ...gallery[index], ...body };
       await saveGallery(env, gallery);
-      return new Response(JSON.stringify(gallery[index]), { headers: corsHeaders });
+      return new Response(JSON.stringify(gallery[index]), { headers });
     }
 
-    // Delete gallery item
-    if (pathname.startsWith('/api/gallery/') && method === 'DELETE') {
+    // Delete gallery
+    if (pathname.includes('gallery') && pathname.split('/').length === 4 && method === 'DELETE') {
       const id = pathname.split('/')[3];
       const gallery = await getGallery(env);
       const index = gallery.findIndex((g: any) => g.id === id);
-      if (index === -1) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: corsHeaders });
+      if (index === -1) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
       const removed = gallery.splice(index, 1);
       await saveGallery(env, gallery);
-      return new Response(JSON.stringify({ success: true, removed: removed[0] }), { headers: corsHeaders });
+      return new Response(JSON.stringify({ success: true, removed: removed[0] }), { headers });
     }
 
     // Hero list
-    if (pathname === '/api/hero' && method === 'GET') {
-      return new Response(JSON.stringify(await getHero(env)), { headers: corsHeaders });
+    if (pathname.includes('hero') && method === 'GET') {
+      return new Response(JSON.stringify(await getHero(env)), { headers });
     }
 
     // Hero add
-    if (pathname === '/api/hero' && method === 'POST') {
+    if (pathname.includes('hero') && method === 'POST') {
       const hero = await getHero(env);
       const body = await request.json() as any;
       if (body.image && body.caption) {
         hero.push({ image: body.image, caption: body.caption });
         await saveHero(env, hero);
       }
-      return new Response(JSON.stringify({ success: true, items: hero }), { status: 201, headers: corsHeaders });
+      return new Response(JSON.stringify({ success: true }), { status: 201, headers });
     }
 
-    // Auth
-    if (pathname === '/api/auth' && method === 'POST') {
-      const body = await request.json() as any;
-      const pwd = (body?.password || '').trim();
-      const isValid = pwd === 'picazo2024';
-      return new Response(
-        JSON.stringify({
-          success: isValid,
-          error: isValid ? null : 'Invalid password',
-          received: pwd.length > 0 ? `${pwd.length} chars` : 'empty'
-        }),
-        { status: isValid ? 200 : 401, headers: corsHeaders }
-      );
-    }
-
-    return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
   } catch (error) {
-    return new Response(JSON.stringify({ error: String(error) }), { status: 500, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: String(error) }), { status: 500, headers });
   }
 };
