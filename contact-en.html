@@ -59,10 +59,10 @@
   <div class="wrap split">
     <div class="contact-info">
       <h2 style="font-size:26px;">Reach out directly</h2>
-      <div class="row"><div class="k">Phone</div><div class="v"><a href="tel:+19285020226">(928) 502-0226</a></div></div>
-      <div class="row"><div class="k">Service Area</div><div class="v">Yuma, AZ &middot; Somerton, AZ &middot; San Luis / border region</div></div>
-      <div class="row"><div class="k">Facebook</div><div class="v"><a href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div></div>
-      <p class="form-note" style="margin-top:10px;">Fastest reply: call/text the number above, or message on Facebook.</p>
+      <div class="row"><div class="k">Phone</div><div class="v"><a id="contactPhoneLink" href="tel:+19285020226">(928) 502-0226</a></div></div>
+      <div class="row"><div class="k">Service Area</div><div class="v" id="contactServiceArea">Yuma, AZ &middot; Somerton, AZ &middot; San Luis / border region</div></div>
+      <div class="row"><div class="k">Facebook</div><div class="v"><a id="contactFacebookLink" href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div></div>
+      <p class="form-note" style="margin-top:10px;" id="contactFastestReply">Fastest reply: call/text the number above, or message on Facebook.</p>
     </div>
     <div>
       <form id="contact-form" class="form-grid">
@@ -85,7 +85,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="brand"><img src="assets/images/logo.jpg" alt="Picazo Arte y Pintura logo"><span>Picazo Arte y Pintura</span></div>
-        <p>Visual artist &amp; muralist painting Yuma, Somerton &amp; the border region in color.</p>
+        <p id="footerTagline">Visual artist &amp; muralist painting Yuma, Somerton &amp; the border region in color.</p>
         <div class="tag-row">
           <span class="tag">Yuma, AZ</span><span class="tag">Somerton, AZ</span><span class="tag">San Luis / Border Region</span>
         </div>
@@ -95,7 +95,7 @@
 <a href="murals-en.html">Murals &amp; Commissions</a></div>
         <div class="footer-col"><h4>Studio</h4><a href="about-en.html">About</a>
 <a href="contact-en.html">Contact</a></div>
-        <div class="footer-col"><h4>Facebook</h4><a href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div>
+        <div class="footer-col"><h4>Facebook</h4><a id="footerFacebookLink" href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -110,5 +110,6 @@
   <div class="cap"></div>
 </div>
 <script src="assets/script.js"></script>
+<script src="assets/settings.js"></script>
 </body>
 </html>

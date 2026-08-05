@@ -61,8 +61,8 @@
     <div>
       <div class="eyebrow c-turquoise">In Her Words</div>
       <h2>Why I paint</h2>
-      <p class="quote" style="font-size:24px;">“I love art, and I firmly believe that everything visual around you can influence you — for better or worse. We owe it to everyone we want to reach to express love, joy, and hope visually.”</p>
-      <p style="margin-top:20px; color:var(--ink-dim);">That belief shows up in every wall Picazo takes on — whether it's a full building exterior, a tropical scene for a restaurant patio, or a single portrait of somebody's dog. Contemporary work on canvas, customized murals, and everything in between, always hand-painted, always on-site.</p>
+      <p class="quote" style="font-size:24px;" id="aboutQuote">“I love art, and I firmly believe that everything visual around you can influence you — for better or worse. We owe it to everyone we want to reach to express love, joy, and hope visually.”</p>
+      <p style="margin-top:20px; color:var(--ink-dim);" id="aboutQuoteFollowup">That belief shows up in every wall Picazo takes on — whether it's a full building exterior, a tropical scene for a restaurant patio, or a single portrait of somebody's dog. Contemporary work on canvas, customized murals, and everything in between, always hand-painted, always on-site.</p>
     </div>
   </div>
 </section>
@@ -74,9 +74,9 @@
       <h2>From first pencil line to final coat</h2>
     </div>
     <div class="split process-split">
-      <figure style="margin:0;"><img src="assets/images/process-03-popart-sketch.jpg" alt="Picazo sketching the pencil outline of a portrait on a wall"><figcaption style="margin-top:12px; color:var(--ink-dim);">Every piece starts as a line drawing on the wall — outline first, one color at a time after.</figcaption></figure>
-      <figure style="margin:0;"><img src="assets/images/gallery-21-mural-turtle-progress.jpg" alt="Sea turtle mural in progress, outline and partial color on a cinder block wall"><figcaption style="margin-top:12px; color:var(--ink-dim);">Some walls take shape slower — outline first, then color piece by piece over several sessions.</figcaption></figure>
-      <figure style="margin:0;"><img src="assets/images/process-01-sketch.jpg" alt="Finished jellyfish mural, color and light built up over the sketch"><figcaption style="margin-top:12px; color:var(--ink-dim);">Layer by layer, the color builds up until the whole wall comes alive.</figcaption></figure>
+      <figure style="margin:0;"><img src="assets/images/process-03-popart-sketch.jpg" alt="Picazo sketching the pencil outline of a portrait on a wall"><figcaption style="margin-top:12px; color:var(--ink-dim);" id="aboutProcessCaption1">Every piece starts as a line drawing on the wall — outline first, one color at a time after.</figcaption></figure>
+      <figure style="margin:0;"><img src="assets/images/gallery-21-mural-turtle-progress.jpg" alt="Sea turtle mural in progress, outline and partial color on a cinder block wall"><figcaption style="margin-top:12px; color:var(--ink-dim);" id="aboutProcessCaption2">Some walls take shape slower — outline first, then color piece by piece over several sessions.</figcaption></figure>
+      <figure style="margin:0;"><img src="assets/images/process-01-sketch.jpg" alt="Finished jellyfish mural, color and light built up over the sketch"><figcaption style="margin-top:12px; color:var(--ink-dim);" id="aboutProcessCaption3">Layer by layer, the color builds up until the whole wall comes alive.</figcaption></figure>
     </div>
   </div>
 </section>
@@ -85,8 +85,8 @@
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow c-coral">Where the Work Lives</div>
-      <h2>Serving Yuma & the border region</h2>
-      <p>Murals across Yuma, AZ and Somerton, AZ, with community pieces reaching toward the San Luis border crossing — plus canvas commissions that ship or hang anywhere.</p>
+      <h2 id="aboutWhereHeading">Serving Yuma & the border region</h2>
+      <p id="aboutWhereText">Murals across Yuma, AZ and Somerton, AZ, with community pieces reaching toward the San Luis border crossing — plus canvas commissions that ship or hang anywhere.</p>
     </div>
     <div class="tag-row">
       <span class="tag">Yuma, AZ</span>
@@ -99,8 +99,8 @@
 
 <section class="cta-band" style="border-bottom:none;">
   <div class="wrap">
-    <h2>Want to see the process up close?</h2>
-    <p>Check out how a commission comes together, from first sketch to final reveal.</p>
+    <h2 id="aboutCtaHeading">Want to see the process up close?</h2>
+    <p id="aboutCtaText">Check out how a commission comes together, from first sketch to final reveal.</p>
     <a class="btn btn-solid" href="murals-en.html">See Murals & Commissions</a>
   </div>
 </section>
@@ -109,7 +109,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="brand"><img src="assets/images/logo.jpg" alt="Picazo Arte y Pintura logo"><span>Picazo Arte y Pintura</span></div>
-        <p>Visual artist &amp; muralist painting Yuma, Somerton &amp; the border region in color.</p>
+        <p id="footerTagline">Visual artist &amp; muralist painting Yuma, Somerton &amp; the border region in color.</p>
         <div class="tag-row">
           <span class="tag">Yuma, AZ</span><span class="tag">Somerton, AZ</span><span class="tag">San Luis / Border Region</span>
         </div>
@@ -119,7 +119,7 @@
 <a href="murals-en.html">Murals &amp; Commissions</a></div>
         <div class="footer-col"><h4>Studio</h4><a href="about-en.html">About</a>
 <a href="contact-en.html">Contact</a></div>
-        <div class="footer-col"><h4>Facebook</h4><a href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div>
+        <div class="footer-col"><h4>Facebook</h4><a id="footerFacebookLink" href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -134,5 +134,7 @@
   <div class="cap"></div>
 </div>
 <script src="assets/script.js"></script>
+<script src="assets/settings.js"></script>
+<script src="assets/about-content.js"></script>
 </body>
 </html>

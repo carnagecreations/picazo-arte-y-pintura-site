@@ -319,6 +319,9 @@
       <button class="tab-btn active" data-tab="gallery">Gallery Items</button>
       <button class="tab-btn" data-tab="hero">Hero Images</button>
       <button class="tab-btn" data-tab="home">Home Page</button>
+      <button class="tab-btn" data-tab="settings">Site Settings</button>
+      <button class="tab-btn" data-tab="about">About Page</button>
+      <button class="tab-btn" data-tab="murals">Murals Page</button>
     </div>
 
     <div class="tab-content active" id="gallery-tab">
@@ -350,6 +353,84 @@
 
         <div class="modal-actions" style="max-width: 300px;">
           <button type="submit">Save Home Page</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="tab-content" id="settings-tab">
+      <form id="settingsForm" style="background: white; padding: 1.5rem; border-radius: 8px; max-width: 800px;">
+        <h3 style="margin-bottom: 1rem;">Contact &amp; Social</h3>
+        <div class="form-group"><label>Phone (display)</label><input type="text" id="settings_phone" placeholder="e.g., (928) 502-0226"></div>
+        <div class="form-group"><label>Phone (tel: link, digits only with +country code)</label><input type="text" id="settings_phoneHref" placeholder="e.g., +19285020226"></div>
+        <div class="form-group"><label>Facebook URL</label><input type="text" id="settings_facebookUrl"></div>
+        <div class="form-group"><label>Facebook display label</label><input type="text" id="settings_facebookLabel"></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Footer Tagline</h3>
+        <div class="form-group"><label>Tagline (Spanish)</label><textarea id="settings_footerTagline"></textarea></div>
+        <div class="form-group"><label>Tagline (English)</label><textarea id="settings_footerTaglineEn"></textarea></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Contact Page</h3>
+        <div class="form-group"><label>Service area text (Spanish)</label><input type="text" id="settings_contactServiceArea"></div>
+        <div class="form-group"><label>Service area text (English)</label><input type="text" id="settings_contactServiceAreaEn"></div>
+        <div class="form-group"><label>"Fastest reply" note (Spanish)</label><textarea id="settings_contactFastestReply"></textarea></div>
+        <div class="form-group"><label>"Fastest reply" note (English)</label><textarea id="settings_contactFastestReplyEn"></textarea></div>
+
+        <div class="modal-actions" style="max-width: 300px;">
+          <button type="submit">Save Site Settings</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="tab-content" id="about-tab">
+      <form id="aboutForm" style="background: white; padding: 1.5rem; border-radius: 8px; max-width: 800px;">
+        <h3 style="margin-bottom: 1rem;">Artist Quote</h3>
+        <div class="form-group"><label>Quote, including quotation marks (Spanish)</label><textarea id="about_quote"></textarea></div>
+        <div class="form-group"><label>Quote, including quotation marks (English)</label><textarea id="about_quoteEn"></textarea></div>
+        <div class="form-group"><label>Follow-up paragraph (Spanish)</label><textarea id="about_quoteFollowup"></textarea></div>
+        <div class="form-group"><label>Follow-up paragraph (English)</label><textarea id="about_quoteFollowupEn"></textarea></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Process Captions</h3>
+        <div class="form-group"><label>Caption 1 (Spanish)</label><input type="text" id="about_processCaption1"></div>
+        <div class="form-group"><label>Caption 1 (English)</label><input type="text" id="about_processCaption1En"></div>
+        <div class="form-group"><label>Caption 2 (Spanish)</label><input type="text" id="about_processCaption2"></div>
+        <div class="form-group"><label>Caption 2 (English)</label><input type="text" id="about_processCaption2En"></div>
+        <div class="form-group"><label>Caption 3 (Spanish)</label><input type="text" id="about_processCaption3"></div>
+        <div class="form-group"><label>Caption 3 (English)</label><input type="text" id="about_processCaption3En"></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">"Where the Work Lives"</h3>
+        <div class="form-group"><label>Heading (Spanish)</label><input type="text" id="about_whereHeading"></div>
+        <div class="form-group"><label>Heading (English)</label><input type="text" id="about_whereHeadingEn"></div>
+        <div class="form-group"><label>Text (Spanish)</label><textarea id="about_whereText"></textarea></div>
+        <div class="form-group"><label>Text (English)</label><textarea id="about_whereTextEn"></textarea></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">CTA Band</h3>
+        <div class="form-group"><label>Heading (Spanish)</label><input type="text" id="about_ctaHeading"></div>
+        <div class="form-group"><label>Heading (English)</label><input type="text" id="about_ctaHeadingEn"></div>
+        <div class="form-group"><label>Text (Spanish)</label><textarea id="about_ctaText"></textarea></div>
+        <div class="form-group"><label>Text (English)</label><textarea id="about_ctaTextEn"></textarea></div>
+
+        <div class="modal-actions" style="max-width: 300px;">
+          <button type="submit">Save About Page</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="tab-content" id="murals-tab">
+      <form id="muralsForm" style="background: white; padding: 1.5rem; border-radius: 8px; max-width: 800px;">
+        <h3 style="margin-bottom: 1rem;">Service Cards</h3>
+        <div id="muralsCardFields"></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">Process Steps</h3>
+        <div id="muralsStepFields"></div>
+
+        <h3 style="margin: 1.5rem 0 1rem;">CTA Band</h3>
+        <div class="form-group"><label>Heading (Spanish)</label><input type="text" id="murals_ctaHeading"></div>
+        <div class="form-group"><label>Heading (English)</label><input type="text" id="murals_ctaHeadingEn"></div>
+        <div class="form-group"><label>Text (Spanish)</label><textarea id="murals_ctaText"></textarea></div>
+        <div class="form-group"><label>Text (English)</label><textarea id="murals_ctaTextEn"></textarea></div>
+
+        <div class="modal-actions" style="max-width: 300px;">
+          <button type="submit">Save Murals Page</button>
         </div>
       </form>
     </div>
@@ -473,6 +554,9 @@
           loadGallery();
           loadHero();
           loadHome();
+          loadSettings();
+          loadAbout();
+          loadMurals();
         } else {
           showMessage('Invalid password', 'error', 'loginError');
         }
@@ -721,6 +805,142 @@
         } else {
           showMessage('Failed to save home page content', 'error');
         }
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
+
+    const SETTINGS_FIELDS = [
+      'phone', 'phoneHref', 'facebookUrl', 'facebookLabel',
+      'footerTagline', 'footerTaglineEn',
+      'contactServiceArea', 'contactServiceAreaEn',
+      'contactFastestReply', 'contactFastestReplyEn'
+    ];
+
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings');
+        const data = await res.json();
+        SETTINGS_FIELDS.forEach(key => {
+          const el = document.getElementById('settings_' + key);
+          if (el) el.value = data[key] || '';
+        });
+      } catch (error) {
+        showMessage('Failed to load site settings: ' + error.message, 'error');
+      }
+    }
+
+    document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {};
+      SETTINGS_FIELDS.forEach(key => {
+        const el = document.getElementById('settings_' + key);
+        if (el) body[key] = el.value;
+      });
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        showMessage(res.ok ? 'Site settings saved successfully' : 'Failed to save site settings', res.ok ? 'success' : 'error');
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
+
+    const ABOUT_FIELDS = [
+      'quote', 'quoteEn', 'quoteFollowup', 'quoteFollowupEn',
+      'processCaption1', 'processCaption1En', 'processCaption2', 'processCaption2En',
+      'processCaption3', 'processCaption3En',
+      'whereHeading', 'whereHeadingEn', 'whereText', 'whereTextEn',
+      'ctaHeading', 'ctaHeadingEn', 'ctaText', 'ctaTextEn'
+    ];
+
+    async function loadAbout() {
+      try {
+        const res = await fetch('/api/about');
+        const data = await res.json();
+        ABOUT_FIELDS.forEach(key => {
+          const el = document.getElementById('about_' + key);
+          if (el) el.value = data[key] || '';
+        });
+      } catch (error) {
+        showMessage('Failed to load about page content: ' + error.message, 'error');
+      }
+    }
+
+    document.getElementById('aboutForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {};
+      ABOUT_FIELDS.forEach(key => {
+        const el = document.getElementById('about_' + key);
+        if (el) body[key] = el.value;
+      });
+      try {
+        const res = await fetch('/api/about', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        showMessage(res.ok ? 'About page saved successfully' : 'Failed to save about page', res.ok ? 'success' : 'error');
+      } catch (error) {
+        showMessage('Error: ' + error.message, 'error');
+      }
+    });
+
+    function buildMuralsFields() {
+      const cardContainer = document.getElementById('muralsCardFields');
+      cardContainer.innerHTML = [1, 2, 3].map(i => `
+        <div class="form-group"><label>Card ${i} title (Spanish)</label><input type="text" id="murals_card${i}Title"></div>
+        <div class="form-group"><label>Card ${i} title (English)</label><input type="text" id="murals_card${i}TitleEn"></div>
+        <div class="form-group"><label>Card ${i} text (Spanish)</label><textarea id="murals_card${i}Text"></textarea></div>
+        <div class="form-group"><label>Card ${i} text (English)</label><textarea id="murals_card${i}TextEn"></textarea></div>
+      `).join('');
+
+      const stepContainer = document.getElementById('muralsStepFields');
+      stepContainer.innerHTML = [1, 2, 3, 4, 5].map(i => `
+        <div class="form-group"><label>Step ${i} title (Spanish)</label><input type="text" id="murals_step${i}Title"></div>
+        <div class="form-group"><label>Step ${i} title (English)</label><input type="text" id="murals_step${i}TitleEn"></div>
+        <div class="form-group"><label>Step ${i} text (Spanish)</label><textarea id="murals_step${i}Text"></textarea></div>
+        <div class="form-group"><label>Step ${i} text (English)</label><textarea id="murals_step${i}TextEn"></textarea></div>
+      `).join('');
+    }
+
+    const MURALS_FIELDS = [
+      ...[1, 2, 3].flatMap(i => [`card${i}Title`, `card${i}TitleEn`, `card${i}Text`, `card${i}TextEn`]),
+      ...[1, 2, 3, 4, 5].flatMap(i => [`step${i}Title`, `step${i}TitleEn`, `step${i}Text`, `step${i}TextEn`]),
+      'ctaHeading', 'ctaHeadingEn', 'ctaText', 'ctaTextEn'
+    ];
+
+    async function loadMurals() {
+      buildMuralsFields();
+      try {
+        const res = await fetch('/api/murals');
+        const data = await res.json();
+        MURALS_FIELDS.forEach(key => {
+          const el = document.getElementById('murals_' + key);
+          if (el) el.value = data[key] || '';
+        });
+      } catch (error) {
+        showMessage('Failed to load murals page content: ' + error.message, 'error');
+      }
+    }
+
+    document.getElementById('muralsForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = {};
+      MURALS_FIELDS.forEach(key => {
+        const el = document.getElementById('murals_' + key);
+        if (el) body[key] = el.value;
+      });
+      try {
+        const res = await fetch('/api/murals', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        showMessage(res.ok ? 'Murals page saved successfully' : 'Failed to save murals page', res.ok ? 'success' : 'error');
       } catch (error) {
         showMessage('Error: ' + error.message, 'error');
       }

@@ -57,7 +57,7 @@
 
 <section style="padding-top:60px;">
   <div class="wrap">
-    <div class="cards"><div class="card"><div class="swatch" style="background:var(--terracotta)"></div><h3>Murales a Gran Escala</h3><p>Exteriores, interiores, edificios completos. Restaurantes, fachadas, muros comunitarios — pintados en el lugar, hechos para durar a la intemperie.</p></div><div class="card"><div class="swatch" style="background:var(--sage)"></div><h3>Retratos de Mascotas y Personajes</h3><p>Una mascota querida junto a su dueño, un personaje personalizado cobrando vida, un retrato pintado en un muro que es solo tuyo.</p></div><div class="card"><div class="swatch" style="background:var(--gold)"></div><h3>Lienzo y Arte Personalizado</h3><p>Piezas originales en lienzo para casa u oficina, del tamaño y estilo que necesita el espacio y la historia que quieres contar.</p></div></div>
+    <div class="cards"><div class="card" data-card="1"><div class="swatch" style="background:var(--terracotta)"></div><h3>Murales a Gran Escala</h3><p>Exteriores, interiores, edificios completos. Restaurantes, fachadas, muros comunitarios — pintados en el lugar, hechos para durar a la intemperie.</p></div><div class="card" data-card="2"><div class="swatch" style="background:var(--sage)"></div><h3>Retratos de Mascotas y Personajes</h3><p>Una mascota querida junto a su dueño, un personaje personalizado cobrando vida, un retrato pintado en un muro que es solo tuyo.</p></div><div class="card" data-card="3"><div class="swatch" style="background:var(--gold)"></div><h3>Lienzo y Arte Personalizado</h3><p>Piezas originales en lienzo para casa u oficina, del tamaño y estilo que necesita el espacio y la historia que quieres contar.</p></div></div>
   </div>
 </section>
 
@@ -67,14 +67,14 @@
       <div class="eyebrow c-turquoise">Cómo Funciona</div>
       <h2>El proceso, de muro a muro</h2>
     </div>
-    <div class="process"><div class="step"><h3>Consulta</h3><p>Hablamos del espacio, el presupuesto y lo que quieres que diga la obra — en persona o por teléfono.</p></div><div class="step"><h3>Concepto y Boceto</h3><p>Recibes un boceto o concepto de color antes de que la pintura toque el muro, para que no haya sorpresas.</p></div><div class="step"><h3>Preparación del Muro</h3><p>La superficie se limpia, se prepara y se mide para que la obra encaje exactamente como se planeó.</p></div><div class="step"><h3>Días de Pintura</h3><p>El mural se pinta por etapas — puedes pasar a ver cómo va tomando forma.</p></div><div class="step"><h3>Revelación y Fotos</h3><p>Recorrido final, retoques si hacen falta, y un set completo de fotos para tu propio uso.</p></div></div>
+    <div class="process"><div class="step" data-step="1"><h3>Consulta</h3><p>Hablamos del espacio, el presupuesto y lo que quieres que diga la obra — en persona o por teléfono.</p></div><div class="step" data-step="2"><h3>Concepto y Boceto</h3><p>Recibes un boceto o concepto de color antes de que la pintura toque el muro, para que no haya sorpresas.</p></div><div class="step" data-step="3"><h3>Preparación del Muro</h3><p>La superficie se limpia, se prepara y se mide para que la obra encaje exactamente como se planeó.</p></div><div class="step" data-step="4"><h3>Días de Pintura</h3><p>El mural se pinta por etapas — puedes pasar a ver cómo va tomando forma.</p></div><div class="step" data-step="5"><h3>Revelación y Fotos</h3><p>Recorrido final, retoques si hacen falta, y un set completo de fotos para tu propio uso.</p></div></div>
   </div>
 </section>
 
 <section class="cta-band" style="border-bottom:none;">
   <div class="wrap">
-    <h2>¿Listo para hablar de tu muro?</h2>
-    <p>Trae una foto del espacio y una idea aproximada — con eso es más que suficiente para empezar.</p>
+    <h2 id="muralsCtaHeading">¿Listo para hablar de tu muro?</h2>
+    <p id="muralsCtaText">Trae una foto del espacio y una idea aproximada — con eso es más que suficiente para empezar.</p>
     <a class="btn btn-solid" href="contact.html">Solicitar Cotización</a>
   </div>
 </section>
@@ -83,7 +83,7 @@
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="brand"><img src="assets/images/logo.jpg" alt="Picazo Arte y Pintura logo"><span>Picazo Arte y Pintura</span></div>
-        <p>Artista visual y muralista, pintando Yuma, Somerton y la región fronteriza a todo color.</p>
+        <p id="footerTagline">Artista visual y muralista, pintando Yuma, Somerton y la región fronteriza a todo color.</p>
         <div class="tag-row">
           <span class="tag">Yuma, AZ</span><span class="tag">Somerton, AZ</span><span class="tag">San Luis / Border Region</span>
         </div>
@@ -93,7 +93,7 @@
 <a href="murals.html">Murales y Encargos</a></div>
         <div class="footer-col"><h4>Estudio</h4><a href="about.html">Sobre Mí</a>
 <a href="contact.html">Contacto</a></div>
-        <div class="footer-col"><h4>Facebook</h4><a href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div>
+        <div class="footer-col"><h4>Facebook</h4><a id="footerFacebookLink" href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -108,5 +108,7 @@
   <div class="cap"></div>
 </div>
 <script src="assets/script.js"></script>
+<script src="assets/settings.js"></script>
+<script src="assets/murals-content.js"></script>
 </body>
 </html>

@@ -52,6 +52,79 @@ const INITIAL_HOME = {
   stat4LabelEn: "Every wall done with love for the client"
 };
 
+const INITIAL_SETTINGS = {
+  phone: "(928) 502-0226",
+  phoneHref: "+19285020226",
+  facebookUrl: "https://www.facebook.com/PicazoArteOficial/",
+  facebookLabel: "facebook.com/PicazoArteOficial",
+  footerTagline: "Artista visual y muralista, pintando Yuma, Somerton y la región fronteriza a todo color.",
+  footerTaglineEn: "Visual artist & muralist painting Yuma, Somerton & the border region in color.",
+  contactServiceArea: "Yuma, AZ · Somerton, AZ · San Luis / región fronteriza",
+  contactServiceAreaEn: "Yuma, AZ · Somerton, AZ · San Luis / border region",
+  contactFastestReply: "Respuesta más rápida: llama/envía un mensaje de texto al número de arriba, o escribe por Facebook.",
+  contactFastestReplyEn: "Fastest reply: call/text the number above, or message on Facebook."
+};
+
+const INITIAL_ABOUT = {
+  quote: "“Amo el arte y tengo la firme convicción de que todo lo visual que te rodea puede influir negativa y positivamente en tu interior. Debemos dar esa importancia a todos aquellos a quienes queremos expresarles amor, alegría y esperanza de manera visual.”",
+  quoteEn: "“I love art, and I firmly believe that everything visual around you can influence you — for better or worse. We owe it to everyone we want to reach to express love, joy, and hope visually.”",
+  quoteFollowup: "Esa convicción se nota en cada muro que Picazo toma — ya sea la fachada completa de un edificio, una escena tropical para la terraza de un restaurante, o el retrato de la mascota de alguien. Arte contemporáneo en lienzo, murales personalizados, y todo lo demás, siempre pintado a mano, siempre en el lugar.",
+  quoteFollowupEn: "That belief shows up in every wall Picazo takes on — whether it's a full building exterior, a tropical scene for a restaurant patio, or a single portrait of somebody's dog. Contemporary work on canvas, customized murals, and everything in between, always hand-painted, always on-site.",
+  processCaption1: "Cada pieza empieza como un dibujo de línea sobre el muro — el contorno primero, un color a la vez después.",
+  processCaption1En: "Every piece starts as a line drawing on the wall — outline first, one color at a time after.",
+  processCaption2: "Algunos muros toman forma más despacio — el contorno primero, luego el color poco a poco en varias sesiones.",
+  processCaption2En: "Some walls take shape slower — outline first, then color piece by piece over several sessions.",
+  processCaption3: "Capa por capa, el color se construye hasta que todo el muro cobra vida.",
+  processCaption3En: "Layer by layer, the color builds up until the whole wall comes alive.",
+  whereHeading: "Sirviendo a Yuma y la región fronteriza",
+  whereHeadingEn: "Serving Yuma & the border region",
+  whereText: "Murales por Yuma, AZ y Somerton, AZ, con piezas comunitarias que llegan hasta el cruce fronterizo de San Luis — además de encargos en lienzo que se envían o cuelgan en cualquier lugar.",
+  whereTextEn: "Murals across Yuma, AZ and Somerton, AZ, with community pieces reaching toward the San Luis border crossing — plus canvas commissions that ship or hang anywhere.",
+  ctaHeading: "¿Quieres ver el proceso de cerca?",
+  ctaHeadingEn: "Want to see the process up close?",
+  ctaText: "Mira cómo se arma un encargo, desde el primer boceto hasta la revelación final.",
+  ctaTextEn: "Check out how a commission comes together, from first sketch to final reveal."
+};
+
+const INITIAL_MURALS = {
+  card1Title: "Murales a Gran Escala",
+  card1TitleEn: "Large-Scale Murals",
+  card1Text: "Exteriores, interiores, edificios completos. Restaurantes, fachadas, muros comunitarios — pintados en el lugar, hechos para durar a la intemperie.",
+  card1TextEn: "Exteriors, interiors, full building wraps. Restaurants, storefronts, community walls — painted on-site, built to hold up outdoors.",
+  card2Title: "Retratos de Mascotas y Personajes",
+  card2TitleEn: "Pet & Character Portraits",
+  card2Text: "Una mascota querida junto a su dueño, un personaje personalizado cobrando vida, un retrato pintado en un muro que es solo tuyo.",
+  card2TextEn: "A beloved pet alongside its owner, a custom character brought to life, a portrait painted on a wall that's just yours.",
+  card3Title: "Lienzo y Arte Personalizado",
+  card3TitleEn: "Canvas & Custom Art",
+  card3Text: "Piezas originales en lienzo para casa u oficina, del tamaño y estilo que necesita el espacio y la historia que quieres contar.",
+  card3TextEn: "Original canvas pieces for a home or office, sized and styled to the space and the story you want it to tell.",
+  step1Title: "Consulta",
+  step1TitleEn: "Consultation",
+  step1Text: "Hablamos del espacio, el presupuesto y lo que quieres que diga la obra — en persona o por teléfono.",
+  step1TextEn: "We talk through the space, the budget, and what you want the piece to say — in person or over the phone.",
+  step2Title: "Concepto y Boceto",
+  step2TitleEn: "Concept & Sketch",
+  step2Text: "Recibes un boceto o concepto de color antes de que la pintura toque el muro, para que no haya sorpresas.",
+  step2TextEn: "You get a sketch or color concept before any paint touches the wall, so there are no surprises.",
+  step3Title: "Preparación del Muro",
+  step3TitleEn: "Wall Prep",
+  step3Text: "La superficie se limpia, se prepara y se mide para que la obra encaje exactamente como se planeó.",
+  step3TextEn: "Surface is cleaned, primed, and measured out so the piece fits the space exactly as planned.",
+  step4Title: "Días de Pintura",
+  step4TitleEn: "Painting Days",
+  step4Text: "El mural se pinta por etapas — puedes pasar a ver cómo va tomando forma.",
+  step4TextEn: "The mural goes up in stages — you're welcome to stop by and watch it come together.",
+  step5Title: "Revelación y Fotos",
+  step5TitleEn: "Reveal & Photos",
+  step5Text: "Recorrido final, retoques si hacen falta, y un set completo de fotos para tu propio uso.",
+  step5TextEn: "Final walkthrough, touch-ups if needed, and a full set of photos for your own use.",
+  ctaHeading: "¿Listo para hablar de tu muro?",
+  ctaHeadingEn: "Ready to talk about your wall?",
+  ctaText: "Trae una foto del espacio y una idea aproximada — con eso es más que suficiente para empezar.",
+  ctaTextEn: "Bring a photo of the space and a rough idea — that's plenty to start with."
+};
+
 export const onRequest = async (context) => {
   const request = context.request;
   const url = new URL(request.url);
@@ -231,6 +304,51 @@ export const onRequest = async (context) => {
       const body = await request.json();
       const updated = { ...home, ...body };
       await env.GALLERY?.put('home', JSON.stringify(updated));
+      return new Response(JSON.stringify(updated), { headers });
+    }
+
+    if (pathname.includes('/settings') && method === 'GET') {
+      const stored = await env.GALLERY?.get('settings');
+      const settings = stored ? { ...INITIAL_SETTINGS, ...JSON.parse(stored) } : INITIAL_SETTINGS;
+      return new Response(JSON.stringify(settings), { headers });
+    }
+
+    if (pathname.includes('/settings') && method === 'PUT') {
+      const stored = await env.GALLERY?.get('settings');
+      const settings = stored ? { ...INITIAL_SETTINGS, ...JSON.parse(stored) } : INITIAL_SETTINGS;
+      const body = await request.json();
+      const updated = { ...settings, ...body };
+      await env.GALLERY?.put('settings', JSON.stringify(updated));
+      return new Response(JSON.stringify(updated), { headers });
+    }
+
+    if (pathname.includes('/about') && method === 'GET') {
+      const stored = await env.GALLERY?.get('about');
+      const about = stored ? { ...INITIAL_ABOUT, ...JSON.parse(stored) } : INITIAL_ABOUT;
+      return new Response(JSON.stringify(about), { headers });
+    }
+
+    if (pathname.includes('/about') && method === 'PUT') {
+      const stored = await env.GALLERY?.get('about');
+      const about = stored ? { ...INITIAL_ABOUT, ...JSON.parse(stored) } : INITIAL_ABOUT;
+      const body = await request.json();
+      const updated = { ...about, ...body };
+      await env.GALLERY?.put('about', JSON.stringify(updated));
+      return new Response(JSON.stringify(updated), { headers });
+    }
+
+    if (pathname.includes('/murals') && method === 'GET') {
+      const stored = await env.GALLERY?.get('murals');
+      const murals = stored ? { ...INITIAL_MURALS, ...JSON.parse(stored) } : INITIAL_MURALS;
+      return new Response(JSON.stringify(murals), { headers });
+    }
+
+    if (pathname.includes('/murals') && method === 'PUT') {
+      const stored = await env.GALLERY?.get('murals');
+      const murals = stored ? { ...INITIAL_MURALS, ...JSON.parse(stored) } : INITIAL_MURALS;
+      const body = await request.json();
+      const updated = { ...murals, ...body };
+      await env.GALLERY?.put('murals', JSON.stringify(updated));
       return new Response(JSON.stringify(updated), { headers });
     }
 
