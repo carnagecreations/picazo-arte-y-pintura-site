@@ -1,36 +1,33 @@
-# Deployment Guide
+# Deployment Guide — Cloudflare Pages
 
-## Quick Deploy to Render (Free)
+## Deploy to Cloudflare Pages
 
-1. Go to [Render.com](https://render.com)
-2. Sign up or log in with GitHub
-3. Click "New +" → "Web Service"
-4. Connect your GitHub repository: `carnagecreations/picazo-arte-y-pintura-site`
-5. Choose the "picazo-site" service (it will auto-detect the render.yaml)
-6. Click "Deploy"
-7. Wait 2-3 minutes for deployment to complete
+If you already have a Cloudflare Pages project set up:
 
-Your site will be live at: `https://picazo-site.onrender.com` (or similar)
+1. **Connect your GitHub repo** (if not already connected):
+   - Go to [dash.cloudflare.com](https://dash.cloudflare.com)
+   - Pages → Create project → Connect Git
+   - Select `carnagecreations/picazo-arte-y-pintura-site`
 
-## Deploy to Railway (Alternative)
+2. **Set build settings:**
+   - Build command: (leave blank)
+   - Build output directory: `/`
+   - Root directory: `/`
 
-1. Go to [Railway.app](https://railway.app)
-2. Sign up with GitHub
-3. Click "New Project" → "Deploy from GitHub repo"
-4. Select the `picazo-arte-y-pintura-site` repo
-5. Railway will auto-detect it's a Node.js app
-6. Set `ADMIN_PASSWORD` environment variable (default: `picazo2024`)
-7. Click "Deploy"
+3. **Deploy:**
+   - Push to `master` branch — it will auto-deploy
+   - Or trigger manual redeploy in Cloudflare Pages dashboard
 
-Your site will be live at the Railway-provided URL.
+4. **Your site is live at:** `https://picazo-site.pages.dev` (or your custom domain)
 
-## Environment Variables
+## Updating the Admin Password
 
-You can customize the admin password by setting:
-- `ADMIN_PASSWORD` — Default is `picazo2024`
+The admin password is currently hardcoded as `picazo2024` in `functions/api/auth.ts`.
 
-On Render: Add in Environment section
-On Railway: Add in Variables section
+To change it:
+1. Edit `functions/api/auth.ts` — change `picazo2024` to your new password
+2. Commit and push to GitHub
+3. Cloudflare Pages will auto-redeploy
 
 ## Local Development
 
@@ -44,10 +41,8 @@ Admin dashboard: `http://localhost:3000/admin.html`
 
 ## Admin Dashboard
 
-Login with password: `picazo2024` (or your custom `ADMIN_PASSWORD`)
-
-From there you can:
-- Add new gallery items with image uploads
-- Edit existing items
-- Delete items
-- Manage hero slider images
+- URL: `yourdomain.com/admin.html`
+- Password: `picazo2024`
+- Can add new gallery items (currently with existing images)
+- Can edit/delete items
+- Can manage hero slider images
