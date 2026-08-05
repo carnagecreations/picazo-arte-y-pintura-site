@@ -1,12 +1,10 @@
 name = "picazo-site"
-type = "javascript"
 main = "src/index.ts"
 compatibility_date = "2025-01-01"
 
 [[kv_namespaces]]
 binding = "GALLERY"
-id = "picazo_gallery"
-preview_id = "picazo_gallery_preview"
+id = "7ccacf2ad5bf4fdda7fc960841fd68e8"
 
 [[r2_buckets]]
 binding = "IMAGES"
@@ -17,12 +15,8 @@ name = "picazo-site-production"
 
 [[env.production.kv_namespaces]]
 binding = "GALLERY"
-id = "picazo_gallery"
+id = "7ccacf2ad5bf4fdda7fc960841fd68e8"
 
 [[env.production.r2_buckets]]
 binding = "IMAGES"
 bucket_name = "picazo-images"
-
-[routes]
-pattern = "picazoarte.pages.dev/api/*"
-zone_name = "pages.dev"

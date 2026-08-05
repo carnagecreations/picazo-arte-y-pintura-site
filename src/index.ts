@@ -181,6 +181,22 @@ export default {
         return new Response(JSON.stringify({ success: true }), { status: 201, headers });
       }
 
+      if (pathname.includes('/image/')) {
+        const filename = pathname.split('/image/')[1];
+        try {
+          const object = await env.IMAGES.get(filename);
+          if (!object) return new Response('Not found', { status: 404 });
+          return new Response(object.body, {
+            headers: {
+              'Content-Type': 'image/jpeg',
+              'Cache-Control': 'public, max-age=31536000'
+            }
+          });
+        } catch (err) {
+          return new Response('Error loading image', { status: 500 });
+        }
+      }
+
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
     } catch (error: any) {
       return new Response(JSON.stringify({ error: error.message || 'Server error' }), { status: 500, headers });

@@ -1,9 +1,7 @@
-const R2_URL = 'https://pub-3de82c1349074b549aa0874178c4013f.r2.dev/picazo-images/';
-
 function getImageUrl(filename) {
   if (!filename) return 'assets/images/placeholder.jpg';
   if (filename.startsWith('http')) return filename;
-  if (/gallery-\d+\.\w+/.test(filename)) return R2_URL + filename; // Timestamp pattern = uploaded
+  if (/gallery-\d+\.\w+/.test(filename)) return '/api/image/' + filename; // Timestamp pattern = uploaded, serve via API
   return 'assets/images/' + filename;
 }
 
