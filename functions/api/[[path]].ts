@@ -73,14 +73,20 @@ export const onRequest = async (context) => {
           featured: formData.get('featured') === 'true'
         };
 
-        const imageFile = formData.get('image') as File;
-        if (imageFile && imageFile.size > 0) {
-          const ext = imageFile.name.split('.').pop();
-          const filename = `gallery-${Date.now()}.${ext}`;
-          await env.IMAGES?.put(filename, imageFile);
-          body.image = filename;
+        const imageFile = formData.get('image');
+        if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+          try {
+            const ext = imageFile.name.split('.').pop();
+            const filename = `gallery-${Date.now()}.${ext}`;
+            const buffer = await imageFile.arrayBuffer();
+            await (env as any).IMAGES.put(filename, buffer);
+            body.image = filename;
+          } catch (uploadErr) {
+            console.error('R2 upload error:', uploadErr);
+            body.image = 'gallery-new-item.jpg';
+          }
         } else {
-          body.image = formData.get('existingImage') || 'gallery-new-item.jpg';
+          body.image = 'gallery-new-item.jpg';
         }
       } else {
         body = await request.json();
