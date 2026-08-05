@@ -79,13 +79,15 @@ export const onRequest = async (context) => {
             const ext = imageFile.name.split('.').pop();
             const filename = `gallery-${Date.now()}.${ext}`;
             const buffer = await imageFile.arrayBuffer();
-            await (env as any).IMAGES.put(filename, buffer);
+            const result = await (env as any).IMAGES.put(filename, buffer);
             body.image = filename;
-          } catch (uploadErr) {
-            console.error('R2 upload error:', uploadErr);
+            body.uploadStatus = 'success';
+          } catch (uploadErr: any) {
+            body.uploadStatus = 'error: ' + (uploadErr?.message || String(uploadErr));
             body.image = 'gallery-new-item.jpg';
           }
         } else {
+          body.uploadStatus = 'no file selected';
           body.image = 'gallery-new-item.jpg';
         }
       } else {
@@ -127,8 +129,8 @@ export const onRequest = async (context) => {
             const buffer = await imageFile.arrayBuffer();
             await (env as any).IMAGES.put(filename, buffer);
             body.image = filename;
-          } catch (uploadErr) {
-            console.error('R2 upload error:', uploadErr);
+          } catch (uploadErr: any) {
+            console.error('R2 upload error:', uploadErr?.message || uploadErr);
           }
         }
       } else {
