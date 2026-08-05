@@ -65,7 +65,53 @@ const INITIAL_SETTINGS = {
   contactFastestReplyEn: "Fastest reply: call/text the number above, or message on Facebook."
 };
 
+const INITIAL_GALLERY_PAGE = {
+  headerEyebrow: "La Galería",
+  headerEyebrowEn: "The Gallery",
+  headerHeading: "Cada muro, cada lienzo, uno a la vez",
+  headerHeadingEn: "Every wall, every canvas, one at a time",
+  headerLede: "Un registro continuo de murales, retratos y encargos en lienzo por Yuma y Somerton, AZ. Toca cualquier pieza para verla de cerca.",
+  headerLedeEn: "A running record of murals, portraits, and canvas commissions across Yuma and Somerton, AZ. Tap any piece for a closer look."
+};
+
+const INITIAL_CONTACT = {
+  headerEyebrow: "Contacto",
+  headerEyebrowEn: "Contact",
+  headerHeading: "Pongamos color en tu muro",
+  headerHeadingEn: "Let's put color on your wall",
+  headerLede: "Cuéntame algunos detalles del espacio y la idea — las fotos ayudan, pero no son necesarias para empezar.",
+  headerLedeEn: "Send a few details about the space and the idea — photos help, but aren't required to start.",
+  formTitle: "Contáctame directamente",
+  formTitleEn: "Reach out directly",
+  labelName: "Nombre",
+  labelNameEn: "Name",
+  labelEmail: "Correo",
+  labelEmailEn: "Email",
+  labelPhone: "Teléfono (opcional)",
+  labelPhoneEn: "Phone (optional)",
+  labelProject: "Tipo de Proyecto",
+  labelProjectEn: "Project Type",
+  labelMessage: "Cuéntame del espacio y la idea",
+  labelMessageEn: "Tell me about the space & the idea",
+  optionMural: "Mural",
+  optionMuralEn: "Mural",
+  optionPortrait: "Retrato de Mascota / Personaje",
+  optionPortraitEn: "Pet / Character Portrait",
+  optionCanvas: "Arte en Lienzo",
+  optionCanvasEn: "Canvas Art",
+  optionUnsure: "Aún no estoy seguro",
+  optionUnsureEn: "Not sure yet",
+  submitLabel: "Enviar Solicitud",
+  submitLabelEn: "Send Inquiry"
+};
+
 const INITIAL_ABOUT = {
+  headerEyebrow: "Sobre Mí",
+  headerEyebrowEn: "About",
+  headerHeading: "Picazo — Artista Visual",
+  headerHeadingEn: "Picazo — Visual Artist",
+  headerLede: "Pintando Yuma, Somerton y la región fronteriza, un muro y un lienzo a la vez.",
+  headerLedeEn: "Painting Yuma, Somerton, and the border region, one wall and one canvas at a time.",
   quote: "“Amo el arte y tengo la firme convicción de que todo lo visual que te rodea puede influir negativa y positivamente en tu interior. Debemos dar esa importancia a todos aquellos a quienes queremos expresarles amor, alegría y esperanza de manera visual.”",
   quoteEn: "“I love art, and I firmly believe that everything visual around you can influence you — for better or worse. We owe it to everyone we want to reach to express love, joy, and hope visually.”",
   quoteFollowup: "Esa convicción se nota en cada muro que Picazo toma — ya sea la fachada completa de un edificio, una escena tropical para la terraza de un restaurante, o el retrato de la mascota de alguien. Arte contemporáneo en lienzo, murales personalizados, y todo lo demás, siempre pintado a mano, siempre en el lugar.",
@@ -87,6 +133,12 @@ const INITIAL_ABOUT = {
 };
 
 const INITIAL_MURALS = {
+  headerEyebrow: "Murales y Encargos",
+  headerEyebrowEn: "Murals & Commissions",
+  headerHeading: "De muro vacío a obra terminada",
+  headerHeadingEn: "From bare wall to finished piece",
+  headerLede: "Cada encargo empieza como una conversación y termina en un muro (o un lienzo) que nadie pasa de largo sin mirar dos veces.",
+  headerLedeEn: "Every commission starts as a conversation and ends with a wall (or a canvas) nobody walks past without looking twice.",
   card1Title: "Murales a Gran Escala",
   card1TitleEn: "Large-Scale Murals",
   card1Text: "Exteriores, interiores, edificios completos. Restaurantes, fachadas, muros comunitarios — pintados en el lugar, hechos para durar a la intemperie.",
@@ -176,6 +228,21 @@ export default {
         } catch (err: any) {
           return new Response(JSON.stringify({ error: err.message, filename }), { status: 500, headers });
         }
+      }
+
+      if (pathname.includes('/gallery-page') && method === 'GET') {
+        const stored = await env.GALLERY.get('galleryPage');
+        const galleryPage = stored ? { ...INITIAL_GALLERY_PAGE, ...JSON.parse(stored) } : INITIAL_GALLERY_PAGE;
+        return new Response(JSON.stringify(galleryPage), { headers });
+      }
+
+      if (pathname.includes('/gallery-page') && method === 'PUT') {
+        const stored = await env.GALLERY.get('galleryPage');
+        const galleryPage = stored ? { ...INITIAL_GALLERY_PAGE, ...JSON.parse(stored) } : INITIAL_GALLERY_PAGE;
+        const body = await request.json();
+        const updated = { ...galleryPage, ...body };
+        await env.GALLERY.put('galleryPage', JSON.stringify(updated));
+        return new Response(JSON.stringify(updated), { headers });
       }
 
       if (pathname.includes('/gallery') && method === 'GET') {
@@ -295,12 +362,69 @@ export default {
       if (pathname.includes('/hero') && method === 'POST') {
         const stored = await env.GALLERY.get('hero');
         const hero = stored ? JSON.parse(stored) : INITIAL_HERO;
-        const body = await request.json();
-        if (body.image && body.caption) {
-          hero.push(body);
+
+        const contentType = request.headers.get('content-type') || '';
+        let entry: any = {};
+
+        if (contentType.includes('multipart/form-data')) {
+          const formData = await request.formData();
+          entry.caption = formData.get('caption');
+          const imageFile = formData.get('image');
+          if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+            const ext = imageFile.name.split('.').pop();
+            const filename = `gallery-${Date.now()}.${ext}`;
+            const buffer = await imageFile.arrayBuffer();
+            await env.IMAGES.put(filename, buffer);
+            entry.image = filename;
+          }
+        } else {
+          entry = await request.json();
+        }
+
+        if (entry.image && entry.caption) {
+          hero.push(entry);
           await env.GALLERY.put('hero', JSON.stringify(hero));
         }
         return new Response(JSON.stringify({ success: true }), { status: 201, headers });
+      }
+
+      if (pathname.includes('/hero') && method === 'PUT') {
+        const idx = parseInt(pathname.split('/')[3], 10);
+        const stored = await env.GALLERY.get('hero');
+        const hero = stored ? JSON.parse(stored) : INITIAL_HERO;
+        if (isNaN(idx) || idx < 0 || idx >= hero.length) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
+
+        const contentType = request.headers.get('content-type') || '';
+        let updates: any = {};
+
+        if (contentType.includes('multipart/form-data')) {
+          const formData = await request.formData();
+          if (formData.get('caption')) updates.caption = formData.get('caption');
+          const imageFile = formData.get('image');
+          if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+            const ext = imageFile.name.split('.').pop();
+            const filename = `gallery-${Date.now()}.${ext}`;
+            const buffer = await imageFile.arrayBuffer();
+            await env.IMAGES.put(filename, buffer);
+            updates.image = filename;
+          }
+        } else {
+          updates = await request.json();
+        }
+
+        hero[idx] = { ...hero[idx], ...updates };
+        await env.GALLERY.put('hero', JSON.stringify(hero));
+        return new Response(JSON.stringify(hero[idx]), { headers });
+      }
+
+      if (pathname.includes('/hero') && method === 'DELETE') {
+        const idx = parseInt(pathname.split('/')[3], 10);
+        const stored = await env.GALLERY.get('hero');
+        const hero = stored ? JSON.parse(stored) : INITIAL_HERO;
+        if (isNaN(idx) || idx < 0 || idx >= hero.length) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
+        hero.splice(idx, 1);
+        await env.GALLERY.put('hero', JSON.stringify(hero));
+        return new Response(JSON.stringify({ success: true }), { headers });
       }
 
       if (pathname.includes('/home') && method === 'GET') {
@@ -360,6 +484,21 @@ export default {
         const body = await request.json();
         const updated = { ...murals, ...body };
         await env.GALLERY.put('murals', JSON.stringify(updated));
+        return new Response(JSON.stringify(updated), { headers });
+      }
+
+      if (pathname.includes('/contact') && method === 'GET') {
+        const stored = await env.GALLERY.get('contact');
+        const contact = stored ? { ...INITIAL_CONTACT, ...JSON.parse(stored) } : INITIAL_CONTACT;
+        return new Response(JSON.stringify(contact), { headers });
+      }
+
+      if (pathname.includes('/contact') && method === 'PUT') {
+        const stored = await env.GALLERY.get('contact');
+        const contact = stored ? { ...INITIAL_CONTACT, ...JSON.parse(stored) } : INITIAL_CONTACT;
+        const body = await request.json();
+        const updated = { ...contact, ...body };
+        await env.GALLERY.put('contact', JSON.stringify(updated));
         return new Response(JSON.stringify(updated), { headers });
       }
 

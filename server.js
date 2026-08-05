@@ -59,6 +59,57 @@ app.get('/api/hero', (req, res) => {
   res.json(data.hero);
 });
 
+app.post('/api/hero', upload.single('image'), (req, res) => {
+  try {
+    const data = readGalleryData();
+    const entry = {
+      caption: req.body.caption,
+      image: req.file ? req.file.filename : req.body.image
+    };
+    if (entry.image && entry.caption) {
+      data.hero.push(entry);
+      writeGalleryData(data);
+    }
+    res.status(201).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.put('/api/hero/:index', upload.single('image'), (req, res) => {
+  try {
+    const data = readGalleryData();
+    const idx = parseInt(req.params.index, 10);
+    if (isNaN(idx) || idx < 0 || idx >= data.hero.length) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    data.hero[idx] = {
+      ...data.hero[idx],
+      caption: req.body.caption || data.hero[idx].caption,
+      image: req.file ? req.file.filename : (req.body.image || data.hero[idx].image)
+    };
+    writeGalleryData(data);
+    res.json(data.hero[idx]);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.delete('/api/hero/:index', (req, res) => {
+  try {
+    const data = readGalleryData();
+    const idx = parseInt(req.params.index, 10);
+    if (isNaN(idx) || idx < 0 || idx >= data.hero.length) {
+      return res.status(404).json({ error: 'Not found' });
+    }
+    const removed = data.hero.splice(idx, 1);
+    writeGalleryData(data);
+    res.json({ success: true, removed: removed[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 const INITIAL_HOME = {
   heroEyebrow: "Yuma, AZ · Artista Visual",
   heroEyebrowEn: "Yuma, AZ · Visual Artist",
@@ -121,7 +172,77 @@ app.put('/api/settings', (req, res) => {
   res.json(data.settings);
 });
 
+const INITIAL_GALLERY_PAGE = {
+  headerEyebrow: "La Galería",
+  headerEyebrowEn: "The Gallery",
+  headerHeading: "Cada muro, cada lienzo, uno a la vez",
+  headerHeadingEn: "Every wall, every canvas, one at a time",
+  headerLede: "Un registro continuo de murales, retratos y encargos en lienzo por Yuma y Somerton, AZ. Toca cualquier pieza para verla de cerca.",
+  headerLedeEn: "A running record of murals, portraits, and canvas commissions across Yuma and Somerton, AZ. Tap any piece for a closer look."
+};
+
+app.get('/api/gallery-page', (req, res) => {
+  const data = readGalleryData();
+  res.json({ ...INITIAL_GALLERY_PAGE, ...(data.galleryPage || {}) });
+});
+
+app.put('/api/gallery-page', (req, res) => {
+  const data = readGalleryData();
+  data.galleryPage = { ...INITIAL_GALLERY_PAGE, ...(data.galleryPage || {}), ...req.body };
+  writeGalleryData(data);
+  res.json(data.galleryPage);
+});
+
+const INITIAL_CONTACT = {
+  headerEyebrow: "Contacto",
+  headerEyebrowEn: "Contact",
+  headerHeading: "Pongamos color en tu muro",
+  headerHeadingEn: "Let's put color on your wall",
+  headerLede: "Cuéntame algunos detalles del espacio y la idea — las fotos ayudan, pero no son necesarias para empezar.",
+  headerLedeEn: "Send a few details about the space and the idea — photos help, but aren't required to start.",
+  formTitle: "Contáctame directamente",
+  formTitleEn: "Reach out directly",
+  labelName: "Nombre",
+  labelNameEn: "Name",
+  labelEmail: "Correo",
+  labelEmailEn: "Email",
+  labelPhone: "Teléfono (opcional)",
+  labelPhoneEn: "Phone (optional)",
+  labelProject: "Tipo de Proyecto",
+  labelProjectEn: "Project Type",
+  labelMessage: "Cuéntame del espacio y la idea",
+  labelMessageEn: "Tell me about the space & the idea",
+  optionMural: "Mural",
+  optionMuralEn: "Mural",
+  optionPortrait: "Retrato de Mascota / Personaje",
+  optionPortraitEn: "Pet / Character Portrait",
+  optionCanvas: "Arte en Lienzo",
+  optionCanvasEn: "Canvas Art",
+  optionUnsure: "Aún no estoy seguro",
+  optionUnsureEn: "Not sure yet",
+  submitLabel: "Enviar Solicitud",
+  submitLabelEn: "Send Inquiry"
+};
+
+app.get('/api/contact', (req, res) => {
+  const data = readGalleryData();
+  res.json({ ...INITIAL_CONTACT, ...(data.contact || {}) });
+});
+
+app.put('/api/contact', (req, res) => {
+  const data = readGalleryData();
+  data.contact = { ...INITIAL_CONTACT, ...(data.contact || {}), ...req.body };
+  writeGalleryData(data);
+  res.json(data.contact);
+});
+
 const INITIAL_ABOUT = {
+  headerEyebrow: "Sobre Mí",
+  headerEyebrowEn: "About",
+  headerHeading: "Picazo — Artista Visual",
+  headerHeadingEn: "Picazo — Visual Artist",
+  headerLede: "Pintando Yuma, Somerton y la región fronteriza, un muro y un lienzo a la vez.",
+  headerLedeEn: "Painting Yuma, Somerton, and the border region, one wall and one canvas at a time.",
   quote: "“Amo el arte y tengo la firme convicción de que todo lo visual que te rodea puede influir negativa y positivamente en tu interior. Debemos dar esa importancia a todos aquellos a quienes queremos expresarles amor, alegría y esperanza de manera visual.”",
   quoteEn: "“I love art, and I firmly believe that everything visual around you can influence you — for better or worse. We owe it to everyone we want to reach to express love, joy, and hope visually.”",
   quoteFollowup: "Esa convicción se nota en cada muro que Picazo toma — ya sea la fachada completa de un edificio, una escena tropical para la terraza de un restaurante, o el retrato de la mascota de alguien. Arte contemporáneo en lienzo, murales personalizados, y todo lo demás, siempre pintado a mano, siempre en el lugar.",
@@ -155,6 +276,12 @@ app.put('/api/about', (req, res) => {
 });
 
 const INITIAL_MURALS = {
+  headerEyebrow: "Murales y Encargos",
+  headerEyebrowEn: "Murals & Commissions",
+  headerHeading: "De muro vacío a obra terminada",
+  headerHeadingEn: "From bare wall to finished piece",
+  headerLede: "Cada encargo empieza como una conversación y termina en un muro (o un lienzo) que nadie pasa de largo sin mirar dos veces.",
+  headerLedeEn: "Every commission starts as a conversation and ends with a wall (or a canvas) nobody walks past without looking twice.",
   card1Title: "Murales a Gran Escala",
   card1TitleEn: "Large-Scale Murals",
   card1Text: "Exteriores, interiores, edificios completos. Restaurantes, fachadas, muros comunitarios — pintados en el lugar, hechos para durar a la intemperie.",

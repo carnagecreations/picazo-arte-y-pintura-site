@@ -15,6 +15,9 @@
       if (!res.ok) return;
       const data = await res.json();
 
+      setText('aboutHeaderEyebrow', data['headerEyebrow' + suffix]);
+      setText('aboutHeaderHeading', data['headerHeading' + suffix]);
+      setText('aboutHeaderLede', data['headerLede' + suffix]);
       setText('aboutQuote', data['quote' + suffix]);
       setText('aboutQuoteFollowup', data['quoteFollowup' + suffix]);
       setText('aboutProcessCaption1', data['processCaption1' + suffix]);

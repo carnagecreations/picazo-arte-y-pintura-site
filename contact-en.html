@@ -46,19 +46,19 @@
 
 <section class="hero" style="padding:70px 0 50px;">
   <div class="wrap">
-    <div class="eyebrow">Contact</div>
-    <h1 style="font-size:clamp(34px,5vw,58px);">Let's put color on your wall</h1>
+    <div class="eyebrow" id="contactHeaderEyebrow">Contact</div>
+    <h1 style="font-size:clamp(34px,5vw,58px);" id="contactHeaderHeading">Let's put color on your wall</h1>
     <svg class="brush" viewBox="0 0 340 22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
   <path d="M3 16C40 4 80 20 120 10C160 0 200 18 240 8C270 1 300 14 337 6" stroke="var(--sage)" stroke-width="5" stroke-linecap="round"/>
 </svg>
-    <p class="lede" style="font-size:19px;">Send a few details about the space and the idea — photos help, but aren't required to start.</p>
+    <p class="lede" style="font-size:19px;" id="contactHeaderLede">Send a few details about the space and the idea — photos help, but aren't required to start.</p>
   </div>
 </section>
 
 <section style="padding-top:50px;">
   <div class="wrap split">
     <div class="contact-info">
-      <h2 style="font-size:26px;">Reach out directly</h2>
+      <h2 style="font-size:26px;" id="contactFormTitle">Reach out directly</h2>
       <div class="row"><div class="k">Phone</div><div class="v"><a id="contactPhoneLink" href="tel:+19285020226">(928) 502-0226</a></div></div>
       <div class="row"><div class="k">Service Area</div><div class="v" id="contactServiceArea">Yuma, AZ &middot; Somerton, AZ &middot; San Luis / border region</div></div>
       <div class="row"><div class="k">Facebook</div><div class="v"><a id="contactFacebookLink" href="https://www.facebook.com/PicazoArteOficial/" target="_blank" rel="noopener">facebook.com/PicazoArteOficial</a></div></div>
@@ -67,15 +67,15 @@
     <div>
       <form id="contact-form" class="form-grid">
         <div class="form-row-2">
-          <div><label for="name">Name</label><input id="name" name="name" type="text" required></div>
-          <div><label for="email">Email</label><input id="email" name="email" type="email" required></div>
+          <div><label for="name" id="contactLabelName">Name</label><input id="name" name="name" type="text" required></div>
+          <div><label for="email" id="contactLabelEmail">Email</label><input id="email" name="email" type="email" required></div>
         </div>
         <div class="form-row-2">
-          <div><label for="phone">Phone (optional)</label><input id="phone" name="phone" type="tel"></div>
-          <div><label for="project">Project Type</label><select id="project" name="project"><option>Mural</option><option>Pet / Character Portrait</option><option>Canvas Art</option><option>Not sure yet</option></select></div>
+          <div><label for="phone" id="contactLabelPhone">Phone (optional)</label><input id="phone" name="phone" type="tel"></div>
+          <div><label for="project" id="contactLabelProject">Project Type</label><select id="project" name="project"><option id="contactOptionMural">Mural</option><option id="contactOptionPortrait">Pet / Character Portrait</option><option id="contactOptionCanvas">Canvas Art</option><option id="contactOptionUnsure">Not sure yet</option></select></div>
         </div>
-        <div><label for="message">Tell me about the space & the idea</label><textarea id="message" name="message" required></textarea></div>
-        <button type="submit" class="btn btn-solid btn-block">Send Inquiry</button>
+        <div><label for="message" id="contactLabelMessage">Tell me about the space & the idea</label><textarea id="message" name="message" required></textarea></div>
+        <button type="submit" class="btn btn-solid btn-block" id="contactSubmitLabel">Send Inquiry</button>
       </form>
     </div>
   </div>
@@ -111,5 +111,6 @@
 </div>
 <script src="assets/script.js"></script>
 <script src="assets/settings.js"></script>
+<script src="assets/contact-content.js"></script>
 </body>
 </html>

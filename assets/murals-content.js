@@ -31,6 +31,10 @@
       if (!res.ok) return;
       const data = await res.json();
 
+      setText('muralsHeaderEyebrow', data['headerEyebrow' + suffix]);
+      setText('muralsHeaderHeading', data['headerHeading' + suffix]);
+      setText('muralsHeaderLede', data['headerLede' + suffix]);
+
       for (let i = 1; i <= 3; i++) setCardOrStep('data-card', i, 'card', data);
       for (let i = 1; i <= 5; i++) setCardOrStep('data-step', i, 'step', data);
 

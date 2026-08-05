@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía del Panel de Administración — Picazo Arte y Pintura</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/images/logo.jpg">
+<link rel="apple-touch-icon" href="assets/images/logo.jpg">
+<meta name="theme-color" content="#F7F5F2">
+<style>
+  :root {
+    --paper: #F7F5F2;
+    --paper-2: #F1EEE8;
+    --paper-3: #E9E4DC;
+    --card: #FFFFFF;
+    --ink: #1F1D1B;
+    --ink-2: #3B362F;
+    --ink-dim: #7A7168;
+    --terracotta: #B15C3B;
+    --terracotta-dim: #C98A6C;
+    --terracotta-wash: #F3E4DC;
+    --sage: #6E7A5E;
+    --sage-wash: #E7EBE1;
+    --gold: #B8924C;
+    --gold-wash: #F3EAD4;
+    --line: rgba(31,29,27,0.13);
+    --line-soft: rgba(31,29,27,0.08);
+    --admin-purple: #667eea;
+    --shadow: 0 2px 10px rgba(31,29,27,0.06);
+    --shadow-lift: 0 10px 30px rgba(31,29,27,0.10);
+  }
+  :root[data-theme="dark"] {
+    --paper: #241B15; --paper-2: #2C2119; --paper-3: #34271D; --card: #2A201A;
+    --ink: #F1E9DD; --ink-2: #D9CDBE; --ink-dim: #A6998A;
+    --terracotta: #E08A62; --terracotta-dim: #C46E48; --terracotta-wash: #3C2A21;
+    --sage: #9FAE8B; --sage-wash: #2D3327; --gold: #D3AE6E; --gold-wash: #3A311F;
+    --line: rgba(241,233,221,0.14); --line-soft: rgba(241,233,221,0.08);
+    --shadow: 0 2px 10px rgba(0,0,0,0.25); --shadow-lift: 0 14px 34px rgba(0,0,0,0.4);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #241B15; --paper-2: #2C2119; --paper-3: #34271D; --card: #2A201A;
+      --ink: #F1E9DD; --ink-2: #D9CDBE; --ink-dim: #A6998A;
+      --terracotta: #E08A62; --terracotta-dim: #C46E48; --terracotta-wash: #3C2A21;
+      --sage: #9FAE8B; --sage-wash: #2D3327; --gold: #D3AE6E; --gold-wash: #3A311F;
+      --line: rgba(241,233,221,0.14); --line-soft: rgba(241,233,221,0.08);
+      --shadow: 0 2px 10px rgba(0,0,0,0.25); --shadow-lift: 0 14px 34px rgba(0,0,0,0.4);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  html[data-lang="es"] .en-only { display: none !important; }
+  html[data-lang="en"] .es-only { display: none !important; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  p, li, .kicker, .stepbody, .field-name, code, .btn-lockup, .layout, .foot, .toc a, nav.toc, .lang-switch { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+  h1, h2, h3 { font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif; text-wrap: balance; color: var(--ink); margin: 0; }
+
+  /* ---------- language switch ---------- */
+  .lang-switch {
+    position: fixed; top: 18px; right: 18px; z-index: 20;
+    display: flex; gap: 3px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 999px; padding: 3px; box-shadow: var(--shadow-lift);
+  }
+  .lang-switch button {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    border: none; background: none; cursor: pointer;
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.03em;
+    padding: 7px 14px; border-radius: 999px; color: var(--ink-dim);
+    transition: background .15s ease, color .15s ease;
+  }
+  html[data-lang="es"] .lang-switch button[data-set="es"],
+  html[data-lang="en"] .lang-switch button[data-set="en"] {
+    background: var(--terracotta); color: white;
+  }
+
+  .shell { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 0; max-width: 1180px; margin: 0 auto; }
+
+  /* ---------- sidebar ---------- */
+  nav.toc {
+    position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
+    padding: 32px 20px 32px 28px; border-right: 1px solid var(--line);
+  }
+  .toc-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .toc-brand .dot {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: conic-gradient(from 210deg, var(--terracotta), var(--gold), var(--sage), var(--terracotta));
+    flex: none;
+  }
+  .toc-brand div { font-size: 13px; line-height: 1.3; color: var(--ink-dim); }
+  .toc-brand strong { display: block; color: var(--ink); font-size: 14.5px; }
+  .toc-group { margin-bottom: 22px; }
+  .toc-group h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-dim); margin-bottom: 10px; font-weight: 600; }
+  .toc a {
+    display: block; font-size: 14px; color: var(--ink-2); text-decoration: none;
+    padding: 6px 0 6px 14px; border-left: 2px solid transparent; margin-left: -1px;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .toc a:hover, .toc a:focus-visible { color: var(--terracotta); border-left-color: var(--terracotta-dim); outline: none; }
+
+  /* ---------- main column ---------- */
+  main { padding: 56px 48px 100px; min-width: 0; }
+  .kicker { font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--terracotta); font-weight: 700; margin-bottom: 14px; }
+  h1.title { font-size: clamp(32px, 4vw, 44px); line-height: 1.08; margin-bottom: 14px; }
+  .subtitle { color: var(--ink-dim); font-size: 17px; line-height: 1.6; max-width: 60ch; margin-bottom: 8px; }
+  .intro-card {
+    margin-top: 30px; background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 22px 26px; box-shadow: var(--shadow); display: flex; gap: 18px; align-items: flex-start;
+  }
+  .intro-card .num { font-size: 22px; }
+  .intro-card p { margin: 0; color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .intro-card a { color: var(--terracotta); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--terracotta-dim); }
+
+  section.chapter { margin-top: 74px; scroll-margin-top: 24px; }
+  section.chapter:first-of-type { margin-top: 56px; }
+  .chapter-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 6px; }
+  .chapter-head .tag {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    color: var(--card); background: var(--terracotta);
+    padding: 4px 10px; border-radius: 999px; flex: none;
+  }
+  h2.chapter-title { font-size: 27px; }
+  .chapter-sub { color: var(--ink-dim); font-size: 15px; margin: 10px 0 30px; max-width: 62ch; line-height: 1.6; }
+
+  .mock-tabs {
+    display: flex; gap: 2px; flex-wrap: wrap; border-bottom: 2px solid var(--paper-3);
+    margin-bottom: 28px; font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .mock-tabs span { font-size: 13px; padding: 9px 14px; color: var(--ink-dim); border-bottom: 3px solid transparent; margin-bottom: -2px; }
+  .mock-tabs span.active { color: var(--admin-purple); border-bottom-color: var(--admin-purple); font-weight: 600; }
+
+  ol.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .step { display: grid; grid-template-columns: 34px 1fr; gap: 16px; padding: 18px 0; border-top: 1px solid var(--line-soft); }
+  .step:first-child { border-top: none; }
+  .step .num {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--terracotta-wash); color: var(--terracotta);
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 700; font-size: 13.5px;
+  }
+  .stepbody h4 { font-size: 16px; font-weight: 600; margin: 0 0 5px; color: var(--ink); }
+  .stepbody p { margin: 0 0 8px; color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+  .stepbody p:last-child { margin-bottom: 0; }
+
+  .field-name {
+    display: inline-block; font-size: 13px; font-weight: 600;
+    background: var(--paper-2); border: 1px solid var(--line); color: var(--ink-2);
+    padding: 2px 9px; border-radius: 6px; white-space: nowrap;
+  }
+  .btn-lockup {
+    display: inline-flex; align-items: center; gap: 6px; background: var(--admin-purple); color: white;
+    font-size: 13px; font-weight: 600; padding: 6px 13px; border-radius: 5px; line-height: 1;
+  }
+  .btn-lockup.danger { background: #d9534f; }
+  .btn-lockup.ghost { background: var(--ink-dim); }
+
+  .note {
+    display: flex; gap: 12px; align-items: flex-start; background: var(--sage-wash);
+    border: 1px solid color-mix(in srgb, var(--sage) 30%, transparent);
+    border-radius: 10px; padding: 14px 16px; margin: 18px 0;
+  }
+  .note.warn { background: var(--gold-wash); border-color: color-mix(in srgb, var(--gold) 35%, transparent); }
+  .note .glyph { font-size: 17px; line-height: 1.4; flex: none; }
+  .note p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+  .note strong { color: var(--ink); }
+
+  .field-map { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 4px 20px; margin: 20px 0; box-shadow: var(--shadow); }
+  .field-map .row {
+    display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 16px; padding: 13px 0;
+    border-top: 1px solid var(--line-soft); align-items: center; font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .field-map .row:first-child { border-top: none; }
+  .field-map .row .where { color: var(--ink-dim); font-size: 13.5px; line-height: 1.5; }
+
+  .layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 20px 0 8px; }
+  .layout .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow); font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+  .layout .card .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--terracotta); font-weight: 700; margin-bottom: 6px; }
+  .layout .card p { margin: 0; font-size: 13.5px; color: var(--ink-dim); line-height: 1.5; }
+
+  .divider { height: 1px; background: var(--line); margin: 60px 0 0; }
+  .foot { margin-top: 56px; padding-top: 26px; color: var(--ink-dim); font-size: 13.5px; line-height: 1.7; }
+  .save-line { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 15px; color: var(--ink-2); line-height: 1.65; margin-top: 20px; }
+
+  @media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; }
+    nav.toc { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); padding: 60px 20px 22px; }
+    main { padding: 36px 22px 80px; }
+  }
+  @media print {
+    nav.toc, .lang-switch { display: none; }
+    .shell { display: block; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<div class="lang-switch" role="group" aria-label="Idioma / Language">
+  <button type="button" data-set="es">ES</button>
+  <button type="button" data-set="en">EN</button>
+</div>
+
+<div class="shell">
+  <nav class="toc" aria-label="Contenido">
+    <div class="toc-brand">
+      <div class="dot" aria-hidden="true"></div>
+      <div><strong>Picazo Arte y Pintura</strong><span class="es-only">Guía del Panel Admin</span><span class="en-only">Admin Panel Guide</span></div>
+    </div>
+
+    <div class="toc-group">
+      <h4><span class="es-only">Empezar</span><span class="en-only">Getting Started</span></h4>
+      <a href="#entrar"><span class="es-only">Cómo Entrar</span><span class="en-only">How to Log In</span></a>
+      <a href="#mapa"><span class="es-only">Mapa de Pestañas</span><span class="en-only">Tab Map</span></a>
+    </div>
+    <div class="toc-group">
+      <h4><span class="es-only">Contenido del Sitio</span><span class="en-only">Site Content</span></h4>
+      <a href="#galeria"><span class="es-only">Galería</span><span class="en-only">Gallery</span></a>
+      <a href="#hero"><span class="es-only">Imágenes del Hero</span><span class="en-only">Hero Images</span></a>
+      <a href="#inicio"><span class="es-only">Página de Inicio</span><span class="en-only">Home Page</span></a>
+    </div>
+    <div class="toc-group">
+      <h4><span class="es-only">Información y Páginas</span><span class="en-only">Info &amp; Pages</span></h4>
+      <a href="#ajustes"><span class="es-only">Datos de Contacto</span><span class="en-only">Contact Info</span></a>
+      <a href="#sobre-mi"><span class="es-only">Página Sobre Mí</span><span class="en-only">About Page</span></a>
+      <a href="#murales"><span class="es-only">Página de Murales</span><span class="en-only">Murals Page</span></a>
+      <a href="#contacto"><span class="es-only">Página de Contacto</span><span class="en-only">Contact Page</span></a>
+    </div>
+    <div class="toc-group">
+      <h4><span class="es-only">Referencia</span><span class="en-only">Reference</span></h4>
+      <a href="#consejos"><span class="es-only">Consejos Generales</span><span class="en-only">General Tips</span></a>
+    </div>
+  </nav>
+
+  <main>
+    <p class="kicker"><span class="es-only">Guía para Picazo · Actualizado 2026</span><span class="en-only">Guide for Picazo · Updated 2026</span></p>
+    <h1 class="title"><span class="es-only">Cómo usar tu Panel de Administración</span><span class="en-only">How to Use Your Admin Panel</span></h1>
+    <p class="subtitle">
+      <span class="es-only">Esta guía te explica, paso a paso, cómo cambiar cualquier texto o imagen de tu sitio web sin tocar código — desde la galería hasta el teléfono de contacto.</span>
+      <span class="en-only">This guide walks you through, step by step, how to change any text or image on your website without touching code — from the gallery to your contact phone number.</span>
+    </p>
+
+    <div class="intro-card">
+      <div class="num">🔑</div>
+      <p>
+        <span class="es-only">Todo se maneja desde una sola dirección: <a href="admin.html">picazoarte.pages.dev/admin</a>. Guarda ese enlace en tus favoritos — es la puerta de entrada a todo lo demás en esta guía.</span>
+        <span class="en-only">Everything is managed from one address: <a href="admin.html">picazoarte.pages.dev/admin</a>. Save that link to your bookmarks — it's the doorway to everything else in this guide.</span>
+      </p>
+    </div>
+
+    <section class="chapter" id="entrar">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Empezar</span><span class="en-only">Getting Started</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Cómo Entrar</span><span class="en-only">How to Log In</span></h2>
+      <p class="chapter-sub"><span class="es-only">El panel está protegido con una contraseña para que solo tú puedas hacer cambios.</span><span class="en-only">The panel is password-protected so only you can make changes.</span></p>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="num">1</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Abre el panel</span><span class="en-only">Open the panel</span></h4>
+            <p><span class="es-only">Ve a <strong>picazoarte.pages.dev/admin</strong> desde tu computadora o teléfono.</span><span class="en-only">Go to <strong>picazoarte.pages.dev/admin</strong> from your computer or phone.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">2</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Escribe la contraseña</span><span class="en-only">Type the password</span></h4>
+            <p><span class="es-only">Escríbela en la caja <span class="field-name">Admin Password</span> y presiona <span class="btn-lockup">Login</span>.</span><span class="en-only">Type it into the <span class="field-name">Admin Password</span> box and press <span class="btn-lockup">Login</span>.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">3</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Ya estás dentro</span><span class="en-only">You're in</span></h4>
+            <p><span class="es-only">Verás una fila de pestañas en la parte de arriba — cada una controla una parte distinta del sitio. Cuando termines, presiona <span class="btn-lockup ghost">Logout</span> arriba a la derecha.</span><span class="en-only">You'll see a row of tabs at the top — each one controls a different part of the site. When you're done, press <span class="btn-lockup ghost">Logout</span> in the top right.</span></p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="note">
+        <div class="glyph">✅</div>
+        <p>
+          <span class="es-only"><strong>No hay botón de "publicar" que se te pueda olvidar.</strong> En cuanto guardas un cambio, ya está visible en el sitio real — normalmente en cuestión de segundos.</span>
+          <span class="en-only"><strong>There's no "publish" button to forget.</strong> As soon as you save a change, it's already live on the real site — usually within seconds.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter" id="mapa">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Empezar</span><span class="en-only">Getting Started</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Mapa de las 7 Pestañas</span><span class="en-only">Map of the 7 Tabs</span></h2>
+      <p class="chapter-sub"><span class="es-only">Así se ve la barra de pestañas dentro del panel. Cada una se explica a detalle más abajo.</span><span class="en-only">This is what the tab bar looks like inside the panel. Each one is explained in detail below.</span></p>
+
+      <div class="mock-tabs">
+        <span class="active">Gallery Items</span><span>Hero Images</span><span>Home Page</span><span>Site Settings</span><span>About Page</span><span>Murals Page</span><span>Contact Page</span>
+      </div>
+
+      <div class="layout">
+        <div class="card"><div class="eyebrow">Gallery Items</div><p><span class="es-only">El título de la página de Galería, más las fotos de trabajos — agregar, editar, destacar o borrar.</span><span class="en-only">The Gallery page's heading, plus the photos of your work — add, edit, feature, or delete.</span></p></div>
+        <div class="card"><div class="eyebrow">Hero Images</div><p><span class="es-only">Las fotos grandes que rotan en el banner de la página de Inicio.</span><span class="en-only">The large photos that rotate in the banner on the Home page.</span></p></div>
+        <div class="card"><div class="eyebrow">Home Page</div><p><span class="es-only">El título, texto y las 4 estadísticas de la página de Inicio.</span><span class="en-only">The heading, text, and 4 stats on the Home page.</span></p></div>
+        <div class="card"><div class="eyebrow">Site Settings</div><p><span class="es-only">Teléfono, Facebook, y el texto que aparece en el pie de página de todo el sitio.</span><span class="en-only">Phone, Facebook, and the text shown in the footer across the whole site.</span></p></div>
+        <div class="card"><div class="eyebrow">About Page</div><p><span class="es-only">El título de la página, la cita, las fotos del proceso y el resto del texto de Sobre Mí.</span><span class="en-only">The page's heading, the quote, process photo captions, and the rest of the About page text.</span></p></div>
+        <div class="card"><div class="eyebrow">Murals Page</div><p><span class="es-only">El título de la página, las 3 tarjetas de servicios y los 5 pasos del proceso en Murales y Encargos.</span><span class="en-only">The page's heading, the 3 service cards, and the 5 process steps on the Murals &amp; Commissions page.</span></p></div>
+        <div class="card"><div class="eyebrow">Contact Page</div><p><span class="es-only">El título de la página y las etiquetas del formulario de contacto (Nombre, Correo, Tipo de Proyecto, etc.).</span><span class="en-only">The page's heading and the contact form's field labels (Name, Email, Project Type, etc.).</span></p></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="chapter" id="galeria">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Contenido del Sitio</span><span class="en-only">Site Content</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Galería — Agregar y Editar Obras</span><span class="en-only">Gallery — Adding and Editing Work</span></h2>
+      <p class="chapter-sub"><span class="es-only">Pestaña <strong>Gallery Items</strong>. Aquí vive cada foto que aparece en tu galería pública.</span><span class="en-only">Gallery Items tab. This is where every photo in your public gallery lives.</span></p>
+
+      <div class="note">
+        <div class="glyph">🧭</div>
+        <p>
+          <span class="es-only">Arriba de la lista hay una sección <span class="field-name">Page Header</span> — controla el título grande y el párrafo de bienvenida de la página de Galería, separado de las fotos individuales.</span>
+          <span class="en-only">Above the list is a <span class="field-name">Page Header</span> section — it controls the Gallery page's big heading and welcome paragraph, separate from the individual photos.</span>
+        </p>
+      </div>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="num">1</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Para agregar una obra nueva</span><span class="en-only">To add a new piece</span></h4>
+            <p><span class="es-only">Presiona <span class="btn-lockup">+ Add Gallery Item</span> arriba de la lista.</span><span class="en-only">Press <span class="btn-lockup">+ Add Gallery Item</span> above the list.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">2</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Escribe el título en los dos idiomas</span><span class="en-only">Write the caption in both languages</span></h4>
+            <p><span class="es-only">Llena <span class="field-name">Caption (Spanish)</span> y <span class="field-name">Caption (English)</span> — igual con <span class="field-name">Tag (Spanish)</span> / <span class="field-name">Tag (English)</span> (por ejemplo "Murales" o "Retratos de Mascotas").</span><span class="en-only">Fill in <span class="field-name">Caption (Spanish)</span> and <span class="field-name">Caption (English)</span> — same with <span class="field-name">Tag (Spanish)</span> / <span class="field-name">Tag (English)</span> (for example "Murales" or "Pet Portraits").</span></p>
+            <p><span class="es-only">Mientras escribes en español, el inglés se sugiere solo — pero siempre revísalo, la traducción automática no es perfecta.</span><span class="en-only">While you type in Spanish, the English suggests itself — but always double check it, the automatic translation isn't perfect.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">3</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Sube la foto</span><span class="en-only">Upload the photo</span></h4>
+            <p><span class="es-only">En <span class="field-name">Image File</span>, elige la foto desde tu computadora o teléfono. Si estás editando una obra ya existente y no quieres cambiar su foto, deja esta casilla vacía.</span><span class="en-only">In <span class="field-name">Image File</span>, choose the photo from your computer or phone. If you're editing an existing piece and don't want to change its photo, leave this box empty.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">4</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Marca "Destacado" si quieres</span><span class="en-only">Check "Featured" if you want</span></h4>
+            <p><span class="es-only">La casilla <span class="field-name">Featured Item</span> hace que esa obra aparezca también en la página de Inicio, en la sección "Trabajo Seleccionado".</span><span class="en-only">The <span class="field-name">Featured Item</span> checkbox makes that piece also show up on the Home page, in the "Selected Work" section.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">5</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Guarda</span><span class="en-only">Save</span></h4>
+            <p><span class="es-only">Presiona <span class="btn-lockup">Save Item</span>. Listo — ya aparece en la galería del sitio.</span><span class="en-only">Press <span class="btn-lockup">Save Item</span>. Done — it's now in the site's gallery.</span></p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="note">
+        <div class="glyph">✏️</div>
+        <p>
+          <span class="es-only">Para cambiar una obra que ya existe, búscala en la lista y presiona <span class="btn-lockup ghost">Edit</span>. Para quitarla del sitio por completo, presiona <span class="btn-lockup danger">Delete</span> — esto no se puede deshacer, así que revisa bien antes de confirmar.</span>
+          <span class="en-only">To change an existing piece, find it in the list and press <span class="btn-lockup ghost">Edit</span>. To remove it from the site entirely, press <span class="btn-lockup danger">Delete</span> — this can't be undone, so double check before confirming.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter" id="hero">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Contenido del Sitio</span><span class="en-only">Site Content</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Imágenes del Hero</span><span class="en-only">Hero Images</span></h2>
+      <p class="chapter-sub"><span class="es-only">Pestaña <strong>Hero Images</strong>. Son las fotos grandes que van cambiando, una tras otra, en el banner de arriba de la página de Inicio.</span><span class="en-only">Hero Images tab. These are the large photos that rotate one after another in the banner at the top of the Home page.</span></p>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="num">1</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Agrega una imagen</span><span class="en-only">Add an image</span></h4>
+            <p><span class="es-only">Presiona <span class="btn-lockup">+ Add Hero Image</span>, escribe una frase corta en <span class="field-name">Caption</span> y sube la foto en <span class="field-name">Image File</span>.</span><span class="en-only">Press <span class="btn-lockup">+ Add Hero Image</span>, write a short phrase in <span class="field-name">Caption</span>, and upload the photo in <span class="field-name">Image File</span>.</span></p>
+          </div>
+        </li>
+        <li class="step">
+          <div class="num">2</div>
+          <div class="stepbody">
+            <h4><span class="es-only">Guarda</span><span class="en-only">Save</span></h4>
+            <p><span class="es-only">Presiona <span class="btn-lockup">Save Image</span>. La nueva foto se suma a la rotación del banner.</span><span class="en-only">Press <span class="btn-lockup">Save Image</span>. The new photo joins the banner rotation.</span></p>
+          </div>
+        </li>
+      </ol>
+
+      <div class="note warn">
+        <div class="glyph">📐</div>
+        <p>
+          <span class="es-only"><strong>Usa fotos horizontales (anchas), no verticales</strong> — el banner es muy ancho y bajo, así que una foto vertical se verá recortada por los lados.</span>
+          <span class="en-only"><strong>Use horizontal (wide) photos, not vertical ones</strong> — the banner is very wide and short, so a vertical photo will get cropped on the sides.</span>
+        </p>
+      </div>
+
+      <div class="note">
+        <div class="glyph">✏️</div>
+        <p>
+          <span class="es-only">Igual que en la galería, cada imagen tiene sus propios botones <span class="btn-lockup ghost">Edit</span> y <span class="btn-lockup danger">Delete</span>. Al editar, puedes cambiar solo la frase y dejar la foto igual — sube una nueva foto únicamente si quieres reemplazarla.</span>
+          <span class="en-only">Same as the gallery, every image has its own <span class="btn-lockup ghost">Edit</span> and <span class="btn-lockup danger">Delete</span> buttons. When editing, you can change just the phrase and leave the photo as-is — only upload a new photo if you want to replace it.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter" id="inicio">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Contenido del Sitio</span><span class="en-only">Site Content</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Página de Inicio</span><span class="en-only">Home Page</span></h2>
+      <p class="chapter-sub"><span class="es-only">Pestaña <strong>Home Page</strong>. Controla el título grande, el texto de bienvenida y las 4 estadísticas de la portada.</span><span class="en-only">Home Page tab. Controls the big heading, the welcome text, and the 4 stats on the front page.</span></p>
+
+      <div class="field-map">
+        <div class="row"><div class="field-name">Eyebrow</div><div class="where"><span class="es-only">La palabra pequeña arriba del título ("Yuma, AZ · Artista Visual").</span><span class="en-only">The small word above the heading ("Yuma, AZ · Visual Artist").</span></div></div>
+        <div class="row"><div class="field-name">Heading</div><div class="where"><span class="es-only">El título grande de la portada.</span><span class="en-only">The big headline on the front page.</span></div></div>
+        <div class="row"><div class="field-name">Lede paragraph</div><div class="where"><span class="es-only">El párrafo de bienvenida debajo del título.</span><span class="en-only">The welcome paragraph below the heading.</span></div></div>
+        <div class="row"><div class="field-name">Primary / Secondary button label</div><div class="where"><span class="es-only">El texto de los dos botones grandes ("Ver la Galería" y "Solicitar un Encargo").</span><span class="en-only">The text on the two big buttons ("View the Gallery" and "Start a Commission").</span></div></div>
+        <div class="row"><div class="field-name">Stat 1–4 number / label</div><div class="where"><span class="es-only">Las 4 estadísticas (seguidores, ciudades, etc.) — el número y su descripción.</span><span class="en-only">The 4 stats (followers, cities, etc.) — the number and its description.</span></div></div>
+      </div>
+
+      <div class="note">
+        <div class="glyph">🌐</div>
+        <p>
+          <span class="es-only">Todos los campos tienen versión <strong>(Spanish)</strong> y <strong>(English)</strong> — recuerda llenar los dos, o esa sección se verá vacía para los visitantes que lean el sitio en inglés.</span>
+          <span class="en-only">Every field has a <strong>(Spanish)</strong> and <strong>(English)</strong> version — remember to fill in both, or that section will look empty to visitors reading the site in English.</span>
+        </p>
+      </div>
+
+      <p class="save-line"><span class="es-only">Cuando termines de editar todo, presiona <span class="btn-lockup">Save Home Page</span> una sola vez al final.</span><span class="en-only">When you're done editing everything, press <span class="btn-lockup">Save Home Page</span> once at the end.</span></p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="chapter" id="ajustes">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Información y Páginas</span><span class="en-only">Info &amp; Pages</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Datos de Contacto y Pie de Página</span><span class="en-only">Contact Info &amp; Footer</span></h2>
+      <p class="chapter-sub">
+        <span class="es-only">Pestaña <strong>Site Settings</strong>. Esta es la única pestaña que cambia información en <em>todas</em> las páginas del sitio a la vez — tu teléfono, tu Facebook, y el texto del pie de página que aparece abajo de cada página.</span>
+        <span class="en-only">Site Settings tab. This is the only tab that changes information across <em>every</em> page of the site at once — your phone, your Facebook, and the footer text shown at the bottom of every page.</span>
+      </p>
+
+      <div class="field-map">
+        <div class="row"><div class="field-name">Phone (display)</div><div class="where"><span class="es-only">El teléfono como se muestra, por ejemplo "(928) 502-0226".</span><span class="en-only">The phone number as shown, e.g. "(928) 502-0226".</span></div></div>
+        <div class="row"><div class="field-name">Phone (tel: link…)</div><div class="where"><span class="es-only">El mismo número pero sin espacios ni paréntesis, con "+1" al inicio — es lo que usa el celular para marcar directo. Ejemplo: <code>+19285020226</code>.</span><span class="en-only">The same number without spaces or parentheses, with "+1" at the start — this is what the phone uses to dial directly. Example: <code>+19285020226</code>.</span></div></div>
+        <div class="row"><div class="field-name">Facebook URL</div><div class="where"><span class="es-only">El enlace completo a tu página de Facebook.</span><span class="en-only">The full link to your Facebook page.</span></div></div>
+        <div class="row"><div class="field-name">Facebook display label</div><div class="where"><span class="es-only">El texto que se ve en vez del enlace (ej. "facebook.com/PicazoArteOficial").</span><span class="en-only">The text shown instead of the link (e.g. "facebook.com/PicazoArteOficial").</span></div></div>
+        <div class="row"><div class="field-name">Footer Tagline</div><div class="where"><span class="es-only">La frase que aparece abajo de tu logo en el pie de página de cada página del sitio.</span><span class="en-only">The phrase shown below your logo in the footer of every page on the site.</span></div></div>
+        <div class="row"><div class="field-name">Service area text</div><div class="where"><span class="es-only">La línea de "Área de Servicio" en la página de Contacto.</span><span class="en-only">The "Service Area" line on the Contact page.</span></div></div>
+        <div class="row"><div class="field-name">"Fastest reply" note</div><div class="where"><span class="es-only">El aviso sobre cuál es la forma más rápida de contactarte.</span><span class="en-only">The note about the fastest way to reach you.</span></div></div>
+      </div>
+
+      <div class="note warn">
+        <div class="glyph">📞</div>
+        <p>
+          <span class="es-only">Si cambias tu número de teléfono, actualiza <strong>los dos</strong> campos — el que se ve en pantalla y el que usa el enlace para marcar. Si solo cambias uno, el texto y el número al que llama el celular no van a coincidir.</span>
+          <span class="en-only">If you change your phone number, update <strong>both</strong> fields — the one shown on screen and the one the link uses to dial. If you only change one, the text and the number the phone actually calls won't match.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="chapter" id="sobre-mi">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Información y Páginas</span><span class="en-only">Info &amp; Pages</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Página "Sobre Mí"</span><span class="en-only">The "About" Page</span></h2>
+      <p class="chapter-sub"><span class="es-only">Pestaña <strong>About Page</strong>. Tu historia, tu cita personal, y las descripciones de tus fotos de proceso.</span><span class="en-only">About Page tab. Your story, your personal quote, and the captions for your process photos.</span></p>
+
+      <div class="field-map">
+        <div class="row"><div class="field-name">Page Header</div><div class="where"><span class="es-only">El eyebrow, título grande y párrafo de bienvenida al principio de la página.</span><span class="en-only">The eyebrow, big heading, and welcome paragraph at the top of the page.</span></div></div>
+        <div class="row"><div class="field-name">Quote</div><div class="where"><span class="es-only">Tu cita personal, la que aparece en letra grande. Incluye las comillas ( &ldquo; &rdquo; ) al escribirla.</span><span class="en-only">Your personal quote, the one shown in large type. Include the quotation marks ( &ldquo; &rdquo; ) when writing it.</span></div></div>
+        <div class="row"><div class="field-name">Follow-up paragraph</div><div class="where"><span class="es-only">El párrafo justo debajo de la cita.</span><span class="en-only">The paragraph right below the quote.</span></div></div>
+        <div class="row"><div class="field-name">Caption 1 / 2 / 3</div><div class="where"><span class="es-only">El texto debajo de cada una de las 3 fotos de "Detrás del Proceso".</span><span class="en-only">The text under each of the 3 "Behind the Process" photos.</span></div></div>
+        <div class="row"><div class="field-name">"Where the Work Lives" heading / text</div><div class="where"><span class="es-only">El título y párrafo de la sección "Dónde Vive el Trabajo".</span><span class="en-only">The heading and paragraph for the "Where the Work Lives" section.</span></div></div>
+        <div class="row"><div class="field-name">CTA Band heading / text</div><div class="where"><span class="es-only">El título y párrafo de la franja final, antes del pie de página.</span><span class="en-only">The heading and paragraph of the final banner, just above the footer.</span></div></div>
+      </div>
+
+      <p class="save-line"><span class="es-only">Presiona <span class="btn-lockup">Save About Page</span> cuando termines.</span><span class="en-only">Press <span class="btn-lockup">Save About Page</span> when you're done.</span></p>
+    </section>
+
+    <section class="chapter" id="murales">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Información y Páginas</span><span class="en-only">Info &amp; Pages</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Página "Murales y Encargos"</span><span class="en-only">The "Murals &amp; Commissions" Page</span></h2>
+      <p class="chapter-sub"><span class="es-only">Pestaña <strong>Murals Page</strong>. Es la pestaña con más campos, porque describe tus 3 tipos de servicio y tus 5 pasos de trabajo — pero todos siguen el mismo patrón.</span><span class="en-only">Murals Page tab. It's the tab with the most fields, because it describes your 3 service types and your 5 work steps — but they all follow the same pattern.</span></p>
+
+      <div class="note">
+        <div class="glyph">🧭</div>
+        <p>
+          <span class="es-only">También incluye una sección <span class="field-name">Page Header</span> arriba de todo, con el eyebrow, título y párrafo de bienvenida de esta página.</span>
+          <span class="en-only">It also includes a <span class="field-name">Page Header</span> section at the very top, with this page's eyebrow, heading, and welcome paragraph.</span>
+        </p>
+      </div>
+
+      <div class="layout">
+        <div class="card"><div class="eyebrow"><span class="es-only">3 Tarjetas de Servicio</span><span class="en-only">3 Service Cards</span></div><p><span class="es-only">Cada una tiene un <span class="field-name">Title</span> y un <span class="field-name">Text</span>, en español e inglés. Son las 3 cajas de colores en la parte de arriba de la página (Murales, Retratos, Lienzo).</span><span class="en-only">Each one has a <span class="field-name">Title</span> and a <span class="field-name">Text</span>, in Spanish and English. These are the 3 colored boxes at the top of the page (Murals, Portraits, Canvas).</span></p></div>
+        <div class="card"><div class="eyebrow"><span class="es-only">5 Pasos del Proceso</span><span class="en-only">5 Process Steps</span></div><p><span class="es-only">Igual — <span class="field-name">Title</span> y <span class="field-name">Text</span> por paso. Son la fila de "Consulta → Concepto → Preparación → Pintura → Revelación".</span><span class="en-only">Same thing — <span class="field-name">Title</span> and <span class="field-name">Text</span> per step. These are the row of "Consultation → Concept → Prep → Painting → Reveal".</span></p></div>
+      </div>
+
+      <div class="note">
+        <div class="glyph">💡</div>
+        <p>
+          <span class="es-only">No necesitas memorizar el orden — cada tarjeta y cada paso está numerado en el panel exactamente en el mismo orden en que aparece en el sitio, de arriba hacia abajo.</span>
+          <span class="en-only">You don't need to memorize the order — every card and step is numbered in the panel in exactly the same order it appears on the site, top to bottom.</span>
+        </p>
+      </div>
+
+      <p class="save-line"><span class="es-only">Al final de todo, presiona <span class="btn-lockup">Save Murals Page</span> una sola vez.</span><span class="en-only">At the very end, press <span class="btn-lockup">Save Murals Page</span> once.</span></p>
+    </section>
+
+    <section class="chapter" id="contacto">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Información y Páginas</span><span class="en-only">Info &amp; Pages</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Página de Contacto</span><span class="en-only">The Contact Page</span></h2>
+      <p class="chapter-sub"><span class="es-only">Pestaña <strong>Contact Page</strong>. El título de la página y las etiquetas del formulario — para cambiar el teléfono, el área de servicio o el aviso de "respuesta más rápida", usa la pestaña <strong>Site Settings</strong> en su lugar.</span><span class="en-only">Contact Page tab. The page's heading and the form's labels — to change the phone number, service area, or "fastest reply" note, use the <strong>Site Settings</strong> tab instead.</span></p>
+
+      <div class="field-map">
+        <div class="row"><div class="field-name">Page Header</div><div class="where"><span class="es-only">El eyebrow, título grande y párrafo de bienvenida al principio de la página.</span><span class="en-only">The eyebrow, big heading, and welcome paragraph at the top of the page.</span></div></div>
+        <div class="row"><div class="field-name">Form title</div><div class="where"><span class="es-only">El título arriba del formulario ("Contáctame directamente").</span><span class="en-only">The heading above the form ("Reach out directly").</span></div></div>
+        <div class="row"><div class="field-name">Name / Email / Phone / Project Type / Message labels</div><div class="where"><span class="es-only">El texto de cada etiqueta del formulario.</span><span class="en-only">The text of each form field's label.</span></div></div>
+        <div class="row"><div class="field-name">Project Type Options 1–4</div><div class="where"><span class="es-only">Las 4 opciones del menú desplegable "Tipo de Proyecto" (Mural, Retrato, Lienzo, No estoy seguro).</span><span class="en-only">The 4 options in the "Project Type" dropdown (Mural, Portrait, Canvas, Not sure).</span></div></div>
+        <div class="row"><div class="field-name">Submit Button label</div><div class="where"><span class="es-only">El texto del botón que envía el formulario.</span><span class="en-only">The text on the button that submits the form.</span></div></div>
+      </div>
+
+      <p class="save-line"><span class="es-only">Presiona <span class="btn-lockup">Save Contact Page</span> cuando termines.</span><span class="en-only">Press <span class="btn-lockup">Save Contact Page</span> when you're done.</span></p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="chapter" id="consejos">
+      <div class="chapter-head"><span class="tag"><span class="es-only">Referencia</span><span class="en-only">Reference</span></span></div>
+      <h2 class="chapter-title"><span class="es-only">Consejos Generales</span><span class="en-only">General Tips</span></h2>
+
+      <div class="layout">
+        <div class="card">
+          <div class="eyebrow"><span class="es-only">Dos idiomas siempre</span><span class="en-only">Two languages, always</span></div>
+          <p><span class="es-only">Casi todos los campos vienen en pareja: uno para español y otro con "(English)" o terminación "En" al final. Llena siempre los dos.</span><span class="en-only">Almost every field comes in a pair: one for Spanish and one labeled "(English)" or ending in "En". Always fill in both.</span></p>
+        </div>
+        <div class="card">
+          <div class="eyebrow"><span class="es-only">Los cambios son inmediatos</span><span class="en-only">Changes are instant</span></div>
+          <p><span class="es-only">No hay un paso extra de "publicar". Al presionar Save, el cambio ya está en vivo en el sitio.</span><span class="en-only">There's no extra "publish" step. As soon as you press Save, the change is already live on the site.</span></p>
+        </div>
+        <div class="card">
+          <div class="eyebrow"><span class="es-only">Revisa antes de borrar</span><span class="en-only">Double check before deleting</span></div>
+          <p><span class="es-only">Borrar una obra de la galería no se puede deshacer. Si tienes dudas, edítala en vez de borrarla.</span><span class="en-only">Deleting a piece from the gallery can't be undone. If you're unsure, edit it instead of deleting it.</span></p>
+        </div>
+        <div class="card">
+          <div class="eyebrow"><span class="es-only">Fotos más pesadas tardan más</span><span class="en-only">Bigger photos take longer</span></div>
+          <p><span class="es-only">Si subes una foto muy grande, la subida puede tardar unos segundos extra — espera a ver el mensaje de éxito antes de cerrar la ventana.</span><span class="en-only">If you upload a very large photo, the upload might take a few extra seconds — wait for the success message before closing the window.</span></p>
+        </div>
+      </div>
+
+      <div class="note warn">
+        <div class="glyph">🔒</div>
+        <p>
+          <span class="es-only"><strong>No compartas la contraseña del panel públicamente.</strong> Cualquiera que la tenga puede cambiar el contenido del sitio. Si crees que alguien más la tiene y no debería, avísale a quien mantiene el sitio para cambiarla.</span>
+          <span class="en-only"><strong>Don't share the panel password publicly.</strong> Anyone who has it can change the site's content. If you think someone else has it who shouldn't, let whoever maintains the site know so it can be changed.</span>
+        </p>
+      </div>
+    </section>
+
+    <div class="foot">
+      <span class="es-only">Panel de administración:</span><span class="en-only">Admin panel:</span> <a href="admin.html" style="color:var(--terracotta);">picazoarte.pages.dev/admin</a><br>
+      <span class="es-only">¿Algo no funciona como se describe aquí? Avísale a quien te ayudó a construir el sitio.</span>
+      <span class="en-only">Something not working as described here? Let whoever helped you build the site know.</span>
+    </div>
+  </main>
+</div>
+
+<script>
+  (function () {
+    var html = document.documentElement;
+    var stored = null;
+    try { stored = localStorage.getItem('picazoGuideLang'); } catch (e) {}
+    html.setAttribute('data-lang', stored === 'en' ? 'en' : 'es');
+
+    document.querySelectorAll('.lang-switch button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var lang = btn.getAttribute('data-set');
+        html.setAttribute('data-lang', lang);
+        try { localStorage.setItem('picazoGuideLang', lang); } catch (e) {}
+      });
+    });
+  })();
+</script>
+</body>
+</html>
