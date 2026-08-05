@@ -105,7 +105,36 @@ export const onRequest = async (context) => {
       const gallery = stored ? JSON.parse(stored) : INITIAL_GALLERY;
       const index = gallery.findIndex((g: any) => g.id === id);
       if (index === -1) return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
-      const body = await request.json();
+
+      const contentType = request.headers.get('content-type') || '';
+      let body: any = {};
+
+      if (contentType.includes('multipart/form-data')) {
+        const formData = await request.formData();
+        body = {
+          caption: formData.get('caption'),
+          captionEn: formData.get('captionEn'),
+          tag: formData.get('tag'),
+          tagEn: formData.get('tagEn'),
+          featured: formData.get('featured') === 'true'
+        };
+
+        const imageFile = formData.get('image');
+        if (imageFile && imageFile instanceof File && imageFile.size > 0) {
+          try {
+            const ext = imageFile.name.split('.').pop();
+            const filename = `gallery-${Date.now()}.${ext}`;
+            const buffer = await imageFile.arrayBuffer();
+            await (env as any).IMAGES.put(filename, buffer);
+            body.image = filename;
+          } catch (uploadErr) {
+            console.error('R2 upload error:', uploadErr);
+          }
+        }
+      } else {
+        body = await request.json();
+      }
+
       gallery[index] = { ...gallery[index], ...body };
       await env.GALLERY?.put('gallery', JSON.stringify(gallery));
       return new Response(JSON.stringify(gallery[index]), { headers });
