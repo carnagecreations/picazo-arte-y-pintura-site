@@ -3,9 +3,9 @@
   "configurations": [
     {
       "name": "picazo-site",
-      "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8934"],
-      "port": 8934
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.js"],
+      "port": 3000
     }
   ]
 }
