@@ -652,7 +652,12 @@
           document.getElementById('tag').value = item.tag || '';
           document.getElementById('tagEn').value = item.tagEn || '';
           document.getElementById('featured').checked = !!item.featured;
-          const imgSrc = item.image.startsWith('http') ? item.image : (item.image.startsWith('gallery-') ? R2_URL + item.image : 'assets/images/' + item.image);
+          let imgSrc = 'assets/images/placeholder.jpg';
+          if (item.image) {
+            if (item.image.startsWith('http')) imgSrc = item.image;
+            else if (/gallery-\d+\.\w+/.test(item.image)) imgSrc = R2_URL + item.image;
+            else imgSrc = 'assets/images/' + item.image;
+          }
           document.getElementById('imagePreview').src = imgSrc;
           document.getElementById('imagePreview').classList.remove('hidden');
           document.getElementById('modal').classList.add('active');
