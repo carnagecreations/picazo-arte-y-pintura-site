@@ -558,17 +558,24 @@
     function openEditModal(id) {
       currentEditId = id;
       fetch(`/api/gallery/${id}`)
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
         .then(item => {
           document.getElementById('modalTitle').textContent = 'Edit Gallery Item';
-          document.getElementById('caption').value = item.caption;
-          document.getElementById('captionEn').value = item.captionEn;
-          document.getElementById('tag').value = item.tag;
-          document.getElementById('tagEn').value = item.tagEn;
-          document.getElementById('featured').checked = item.featured;
+          document.getElementById('caption').value = item.caption || '';
+          document.getElementById('captionEn').value = item.captionEn || '';
+          document.getElementById('tag').value = item.tag || '';
+          document.getElementById('tagEn').value = item.tagEn || '';
+          document.getElementById('featured').checked = !!item.featured;
           document.getElementById('imagePreview').src = `assets/images/${item.image}`;
           document.getElementById('imagePreview').classList.remove('hidden');
           document.getElementById('modal').classList.add('active');
+        })
+        .catch(err => {
+          console.error('Failed to load item:', err);
+          alert('Failed to load item for editing');
         });
     }
 
