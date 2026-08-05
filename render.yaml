@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: picazo-site
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_PASSWORD
+        scope: build
+        value: picazo2024
