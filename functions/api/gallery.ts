@@ -161,6 +161,13 @@ interface Env {
   GALLERY: KVNamespace;
 }
 
+const INITIAL_HERO = [
+  { image: "hero-banner.jpg", caption: "Muros que detienen el tráfico" },
+  { image: "gallery-06-mural-bulldog-jordan.jpg", caption: "Lienzos que llenan un cuarto" },
+  { image: "gallery-05-mural-bulldog-beyonce.jpg", caption: "Cada pieza, pintada a mano" },
+  { image: "gallery-11-mural-vamos-mexico.jpg", caption: "En el lugar, a todo color" }
+];
+
 async function getGallery(env: Env) {
   const stored = await env.GALLERY.get('gallery');
   return stored ? JSON.parse(stored) : INITIAL_GALLERY;
@@ -168,6 +175,15 @@ async function getGallery(env: Env) {
 
 async function saveGallery(env: Env, data: any) {
   await env.GALLERY.put('gallery', JSON.stringify(data));
+}
+
+async function getHero(env: Env) {
+  const stored = await env.GALLERY.get('hero');
+  return stored ? JSON.parse(stored) : INITIAL_HERO;
+}
+
+async function saveHero(env: Env, data: any) {
+  await env.GALLERY.put('hero', JSON.stringify(data));
 }
 
 export const onRequest: PagesFunction<Env> = async (context) => {
@@ -179,6 +195,37 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   if (method === 'GET' && url.pathname === '/api/gallery') {
     const gallery = await getGallery(env);
     return new Response(JSON.stringify(gallery), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // GET /api/hero
+  if (method === 'GET' && url.pathname === '/api/hero') {
+    const hero = await getHero(env);
+    return new Response(JSON.stringify(hero), {
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  // POST /api/hero
+  if (method === 'POST' && url.pathname === '/api/hero') {
+    const hero = await getHero(env);
+    const body = await request.json() as any;
+    const { caption, image } = body;
+
+    if (image) {
+      hero.push({ image, caption });
+    } else {
+      // Update caption for existing item
+      const item = hero.find((h: any) => h.image === body.existingImage);
+      if (item) {
+        item.caption = caption;
+      }
+    }
+
+    await saveHero(env, hero);
+    return new Response(JSON.stringify({ success: true, items: hero }), {
+      status: 201,
       headers: { 'Content-Type': 'application/json' }
     });
   }
