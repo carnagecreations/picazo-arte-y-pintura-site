@@ -64,6 +64,22 @@ export default {
         });
       }
 
+      if (pathname.includes('/image/')) {
+        const filename = pathname.split('/image/')[1].replace(/^\//, ''); // Remove leading slash
+        try {
+          const object = await env.IMAGES.get(filename);
+          if (!object) return new Response(JSON.stringify({ error: `Not found: ${filename}`, pathname }), { status: 404, headers });
+          return new Response(object.body, {
+            headers: {
+              'Content-Type': 'image/jpeg',
+              'Cache-Control': 'public, max-age=31536000'
+            }
+          });
+        } catch (err: any) {
+          return new Response(JSON.stringify({ error: err.message, filename }), { status: 500, headers });
+        }
+      }
+
       if (pathname.includes('/gallery') && method === 'GET') {
         const stored = await env.GALLERY.get('gallery');
         const gallery = stored ? JSON.parse(stored) : INITIAL_GALLERY;
@@ -187,22 +203,6 @@ export default {
           await env.GALLERY.put('hero', JSON.stringify(hero));
         }
         return new Response(JSON.stringify({ success: true }), { status: 201, headers });
-      }
-
-      if (pathname.includes('/image/')) {
-        const filename = pathname.split('/image/')[1].replace(/^\//, ''); // Remove leading slash
-        try {
-          const object = await env.IMAGES.get(filename);
-          if (!object) return new Response(JSON.stringify({ error: `Not found: ${filename}`, pathname }), { status: 404, headers });
-          return new Response(object.body, {
-            headers: {
-              'Content-Type': 'image/jpeg',
-              'Cache-Control': 'public, max-age=31536000'
-            }
-          });
-        } catch (err: any) {
-          return new Response(JSON.stringify({ error: err.message, filename }), { status: 500, headers });
-        }
       }
 
       return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });

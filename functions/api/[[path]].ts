@@ -53,6 +53,22 @@ export const onRequest = async (context) => {
       });
     }
 
+    if (pathname.includes('/image/')) {
+      const filename = pathname.split('/image/')[1];
+      try {
+        const object = await (env as any).IMAGES.get(filename);
+        if (!object) return new Response('Not found', { status: 404 });
+        return new Response(object.body, {
+          headers: {
+            'Content-Type': 'image/jpeg',
+            'Cache-Control': 'public, max-age=31536000'
+          }
+        });
+      } catch (err) {
+        return new Response('Error loading image', { status: 500 });
+      }
+    }
+
     if (pathname.includes('/gallery') && method === 'GET') {
       const stored = await env.GALLERY?.get('gallery');
       const gallery = stored ? JSON.parse(stored) : INITIAL_GALLERY;
@@ -176,22 +192,6 @@ export const onRequest = async (context) => {
         await env.GALLERY?.put('hero', JSON.stringify(hero));
       }
       return new Response(JSON.stringify({ success: true }), { status: 201, headers });
-    }
-
-    if (pathname.includes('/image/')) {
-      const filename = pathname.split('/image/')[1];
-      try {
-        const object = await (env as any).IMAGES.get(filename);
-        if (!object) return new Response('Not found', { status: 404 });
-        return new Response(object.body, {
-          headers: {
-            'Content-Type': 'image/jpeg',
-            'Cache-Control': 'public, max-age=31536000'
-          }
-        });
-      } catch (err) {
-        return new Response('Error loading image', { status: 500 });
-      }
     }
 
     return new Response(JSON.stringify({ error: 'Not found' }), { status: 404, headers });
