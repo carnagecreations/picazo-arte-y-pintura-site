@@ -157,7 +157,12 @@ const INITIAL_SETTINGS = {
   contactServiceArea: "Yuma, AZ · Somerton, AZ · San Luis / región fronteriza",
   contactServiceAreaEn: "Yuma, AZ · Somerton, AZ · San Luis / border region",
   contactFastestReply: "Respuesta más rápida: llama/envía un mensaje de texto al número de arriba, o escribe por Facebook.",
-  contactFastestReplyEn: "Fastest reply: call/text the number above, or message on Facebook."
+  contactFastestReplyEn: "Fastest reply: call/text the number above, or message on Facebook.",
+  navCtaLabel: "Cotizar",
+  navCtaLabelEn: "Get a Quote",
+  footerTag1: "Yuma, AZ",
+  footerTag2: "Somerton, AZ",
+  footerTag3: "San Luis / Border Region"
 };
 
 app.get('/api/settings', (req, res) => {

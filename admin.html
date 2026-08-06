@@ -434,6 +434,15 @@
           <div class="form-group"><label>"Fastest reply" note (English)</label><textarea id="settings_contactFastestReplyEn"></textarea></div>
         </div>
 
+        <h3 style="margin: 1.5rem 0 1rem;">Navigation &amp; Footer</h3>
+        <div class="field-row">
+          <div class="form-group"><label>"Get a Quote" nav button (Spanish)</label><input type="text" id="settings_navCtaLabel"></div>
+          <div class="form-group"><label>"Get a Quote" nav button (English)</label><input type="text" id="settings_navCtaLabelEn"></div>
+        </div>
+        <div class="form-group"><label>Footer location tag 1</label><input type="text" id="settings_footerTag1"></div>
+        <div class="form-group"><label>Footer location tag 2</label><input type="text" id="settings_footerTag2"></div>
+        <div class="form-group"><label>Footer location tag 3</label><input type="text" id="settings_footerTag3"></div>
+
         <div class="modal-actions" style="max-width: 300px;">
           <button type="submit">Save Site Settings</button>
         </div>
@@ -1034,7 +1043,9 @@
       'phone', 'phoneHref', 'facebookUrl', 'facebookLabel',
       'footerTagline', 'footerTaglineEn',
       'contactServiceArea', 'contactServiceAreaEn',
-      'contactFastestReply', 'contactFastestReplyEn'
+      'contactFastestReply', 'contactFastestReplyEn',
+      'navCtaLabel', 'navCtaLabelEn',
+      'footerTag1', 'footerTag2', 'footerTag3'
     ];
 
     async function loadSettings() {

@@ -34,6 +34,13 @@
 
       setText('contactServiceArea', data['contactServiceArea' + suffix]);
       setText('contactFastestReply', data['contactFastestReply' + suffix]);
+
+      setText('navCta', data['navCtaLabel' + suffix]);
+      setText('navCtaMobile', data['navCtaLabel' + suffix]);
+
+      setText('footerTag1', data.footerTag1);
+      setText('footerTag2', data.footerTag2);
+      setText('footerTag3', data.footerTag3);
     } catch (error) {
       console.error('Error loading site settings:', error);
     }

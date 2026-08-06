@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://picazoarte.pages.dev/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/index-en"/>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/index-en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/index-en"/>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/gallery</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/gallery"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/gallery-en"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/gallery-en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/gallery"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/gallery-en"/>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/murals</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/murals"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/murals-en"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/murals-en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/murals"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/murals-en"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/about</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/about-en"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/about-en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/about-en"/>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/contact</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/contact-en"/>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://picazoarte.pages.dev/contact-en</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://picazoarte.pages.dev/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://picazoarte.pages.dev/contact-en"/>
+    <priority>0.8</priority>
+  </url>
+</urlset>
